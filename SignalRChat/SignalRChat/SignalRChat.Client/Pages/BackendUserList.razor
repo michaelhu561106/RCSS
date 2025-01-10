@@ -1,0 +1,331 @@
+﻿@page "/BackendUserList"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@* @inject SignalRChat.Client.Service.BusinessService ObjectBusinessService *@
+@inject SignalRChat.Client.Service.BackendUserService ObjectBackendUserService
+@inject IConfiguration configuration
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>後台用戶管理</PageTitle>
+<h3>後台用戶管理</h3>
+@if (read)
+{
+    <div class="filters">
+        <label for="backend_user_name">後台用戶名稱</label>
+        <input id="backend_user_name"
+        type="text"
+        class="form-control"
+        @bind="backend_user_name" />
+        <label for="email">email</label>
+        <input id="email"
+        type="text"
+        class="form-control"
+        @bind="email" />
+        <button class="btn btn-outline-primary"
+        @onclick="FilterSearchResults">
+            查詢
+        </button>
+        <button class="btn btn-outline-secondary"
+        @onclick="ClearSearchFilter">
+            清除
+        </button>
+        @if (create)
+        {
+            <button class="btn btn-outline-secondary"
+                    @onclick="AddBackendUserList">
+                新增
+            </button>
+        }
+    </div>
+}
+else
+{
+    if (create)
+    {
+        <div class="filters">
+            <button class="btn btn-outline-secondary"
+            @onclick="AddBackendUserList">
+                新增
+            </button>
+        </div>
+    }
+}
+@if (read)
+{
+    <Grid TItem="DataBackendUserList"
+    Class="table table-hover table-bordered table-striped"
+    DataProvider="BackendUserListDataProvider"
+    AllowPaging="true"
+    Responsive="true"
+    PageSize=2
+    @ref="GridDBL">
+
+        <GridColumn TItem="DataBackendUserList" HeaderText="後台用戶id" PropertyName="backend_user_id" SortString="backend_user_id" SortKeySelector="item => item.backend_user_id" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center" Class="d-none">
+            @context.backend_user_id
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="後台用戶名稱" PropertyName="backend_user_name" SortString="backend_user_name" SortKeySelector="item => item.backend_user_name" FilterTextboxWidth="80">
+            @context.backend_user_name
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="email" PropertyName="email" SortString="email" SortKeySelector="item => item.email" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+            @context.email
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="phone" PropertyName="phone" SortString="phone" SortKeySelector="item => item.phone" FilterTextboxWidth="80">
+            @context.phone
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="國碼" PropertyName="phone_country" SortString="phone_country" SortKeySelector="item => item.phone_country" FilterTextboxWidth="80">
+            @context.phone_country
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="國別" PropertyName="country_id" SortString="country_id" SortKeySelector="item => item.country_id" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+            @context.country_id
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="商家代碼" PropertyName="phone" SortString="business_id" SortKeySelector="item => item.business_id" FilterTextboxWidth="80">
+            @context.business_id
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="創建日期" PropertyName="created_date" SortString="created_date" SortKeySelector="item => item.created_date" FilterTextboxWidth="100">
+            @context.created_date
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="更新日期" PropertyName="updated_date" SortString="updated_date" SortKeySelector="item => item.updated_date" FilterTextboxWidth="120">
+            @context.updated_date
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList" HeaderText="更新者" PropertyName="update_backend_user_id" SortString="update_backend_user_id" SortKeySelector="item => item.update_backend_user_id" FilterTextboxWidth="150">
+            @context.update_backend_user_id
+        </GridColumn>
+        <GridColumn TItem="DataBackendUserList">
+            @if (update)
+            {
+                <Tooltip Title="Edit" role="button">
+                    <Icon Name="IconName.PencilFill" Size=" IconSize.x5" @onclick="@(() => Update(@context.backend_user_id))" title="" />
+                </Tooltip>
+            }
+            @if (delete)
+            {
+                <Tooltip Title="Delete" role="button">
+                    <Icon Name="IconName.ClipboardXFill" Size=" IconSize.x5" @onclick="@(() => Delete(@context.backend_user_id))" />
+                </Tooltip>
+            }
+            @if (right)
+            {
+                <Tooltip Title="Rights" role="button">
+                    <Icon Name="IconName.SafeFill" Size=" IconSize.x5" @onclick="@(() => Rights(@context.backend_user_id,@context.backend_user_name))" />
+                </Tooltip>
+            }
+            @if(service) {
+                <Tooltip Title="Customer Service" role="button">
+                    <Icon Name="IconName.Bank" Size=" IconSize.x5" @onclick="@(() => CustomerService(@context.backend_user_id,@context.backend_user_name))" />
+                </Tooltip>
+            }
+        </GridColumn>
+    </Grid>
+}
+@if(delete)
+{
+    <Modal @ref="modal1"
+           title="刪除資料">
+
+        <BodyTemplate>
+            確定刪除這筆資料？
+        </BodyTemplate>
+
+        <FooterTemplate>
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">取消</Button>
+            <Button Color="ButtonColor.Primary" @onclick="OnDeleteModalClick">確定</Button>
+        </FooterTemplate>
+
+    </Modal>
+    <Modal @ref="modal2" Title="System Message">
+        <BodyTemplate>
+            code:@req.code<br />
+            message:@req.message
+        </BodyTemplate>
+    </Modal>
+}
+@code {
+    private DataBackendUserList? selected;
+    private string backend_user_name = "";
+    private string email = "";
+    private int del_backend_user_id = 0;
+    private string errorMessage = "";
+    private int business_id_select = 0;
+    private string business_service_name_select = "";
+    private IQueryable<DataBackendUserList> dataBackendUserList;
+    private SignalRChat.Client.Model.BackendUserList backendUserList;
+    private Grid<DataBackendUserList> GridDBL;
+    private Modal modal1 = default!;
+    private Modal modal2 = default!;
+    private ResponseStanderd req = default!;
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool create = false;
+    private bool read = false;
+    private bool update = false;
+    private bool delete = false;
+    private bool right = false;
+    private bool service = false;
+
+    private void Update(int backend_user_id)
+    {
+        NavManager.NavigateTo($"/BackendUserListUpdate/{backend_user_id}");
+    }
+    private void Rights(int backend_user_id, string backend_user_name)
+    {
+        NavManager.NavigateTo($"/BackendUserRights/{backend_user_id}/{backend_user_name}");
+    }
+    private void CustomerService(int backend_user_id, string backend_user_name)
+    {
+        NavManager.NavigateTo($"/BackendBusinessServiceRights/{backend_user_id}/{backend_user_name}");
+    }    
+    private async Task OnHideModalClick()
+    {
+        await modal1.HideAsync();
+    }
+    private async Task OnDeleteModalClick()
+    {
+        await modal1.HideAsync();
+        req = await ObjectBackendUserService.DeleteBackendUserList(del_backend_user_id);
+        if (req.code == "0")
+        {
+            // var parameters = new Dictionary<string, object>();
+            // parameters.Add("Error Code", req.code);
+            // parameters.Add("Error Message", req.message);
+            // await modal2.ShowAsync<ResponseStanderd>(title: "System Message", parameters: parameters);
+            // StateHasChanged();
+            await modal2.ShowAsync();
+            // await GridDBL.ResetPageNumber();
+            await GridDBL.RefreshDataAsync(new CancellationToken());
+            await GridDBL.ResetPageNumber();
+        }
+        else
+        {
+            // await modal2.ShowAsync<ResponseStanderd>($"code：{req.code}", $"刪除失敗，{req.message}");
+            await modal2.ShowAsync();
+        }
+    }
+    private async void Delete(int backend_user_id)
+    {
+        del_backend_user_id = backend_user_id;
+        await modal1.ShowAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        var BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 17).Count() > 0)
+        {
+            create = true;
+        }
+        else
+        {
+            create = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 18).Count() > 0)
+        {
+            update = true;
+        }
+        else
+        {
+            update = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 19).Count() > 0)
+        {
+            read = true;
+        }
+        else
+        {
+            read = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 20).Count() > 0)
+        {
+            delete = true;
+        }
+        else
+        {
+            delete = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 24).Count() > 0)
+        {
+            right = true;
+        }
+        else
+        {
+            right = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 33).Count() > 0)
+        {
+            service = true;
+        }
+        else
+        {
+            service = false;
+        }
+        backend_user_name = "";
+        email = "";
+         StateHasChanged();
+    }
+    // protected override void OnAfterRender(bool firstRender)
+    // {
+
+    //     if (firstRender)
+    //     {
+    //         try
+    //         {
+    //             Initialize();
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             errorMessage = $"錯誤: {ex.Message}";
+    //         }
+    //     }
+    // }
+    // private void Initialize()
+    // {
+
+    //     backend_user_name = "";
+    //     email = "";
+    // }
+    private async Task<GridDataProviderResult<DataBackendUserList>> BackendUserListDataProvider(GridDataProviderRequest<DataBackendUserList> request)
+    {
+        SignalRChat.Client.Model.BackendUserList bList = await ObjectBackendUserService.GetBackendUserList(backend_user_name, email, int.Parse(configuration["CountPerPage"]), request.PageNumber);
+        if (bList.code == "0")
+        {
+            backendUserList = bList;
+            return await Task.FromResult(new GridDataProviderResult<DataBackendUserList> { Data = backendUserList.data, TotalCount = backendUserList.dataBackendUsersCount });
+        }
+        else
+        {
+            Console.WriteLine($"錯誤代碼：{backendUserList.code},錯誤訊息：{backendUserList.message}");
+        }
+        return await Task.FromResult(new GridDataProviderResult<DataBackendUserList> { Data = new List<DataBackendUserList>(), TotalCount = 0 });
+    }
+    private async void FilterSearchResults()
+    {
+        // await GridDBL.ResetPageNumber();
+        await GridDBL.RefreshDataAsync(new CancellationToken());
+        await GridDBL.ResetPageNumber();
+    }
+
+    private void ClearSearchFilter()
+    {
+        backend_user_name = "";
+        email = "";
+    }
+    private void AddBackendUserList()
+    {
+        NavManager.NavigateTo("/BackendUserListCreate");
+    }
+}

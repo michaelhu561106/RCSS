@@ -1,0 +1,92 @@
+﻿@page "/BusinessServiceListCreate"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+@inject SignalRChat.Client.Service.BusinessServiceService ObjectBusinessServiceService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>商家客服聊天室新增</PageTitle>
+@if (create)
+{
+    <h3>商家客服聊天室新增</h3>
+    <EditForm Model="@businessServiceListCreateModel" OnValidSubmit="@AddBusinessServiceListAsync">
+        <DataAnnotationsValidator @ref="dataAnnotationsValidator" />
+        <ValidationSummary />
+        <label for="business_id">商家id</label>
+        <input id="business_id"
+               type="number"
+               class="form-control"
+               @bind="businessServiceListCreateModel.business_id" />
+        <label for="business_service_name">客服聊天室名稱</label>
+        <input id="business_service_name"
+               type="text"
+               class="form-control"
+               @bind="businessServiceListCreateModel.business_service_name" />
+        <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+        <button class="btn btn-outline-primary" type="submit">
+            新增
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+                @onclick="@CancelBusinessServiceListAsync">
+            取消
+        </button>
+    </EditForm>
+}
+@code {
+    private BusinessServiceListCreateModel businessServiceListCreateModel = new BusinessServiceListCreateModel();
+    private DataAnnotationsValidator dataAnnotationsValidator = new DataAnnotationsValidator();    
+    private string errorMessage = "";
+    private string isHide = "d-none";
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool create = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 13).Count() > 0)
+        {
+            create = true;
+        }
+        else
+        {
+            create = false;
+        }
+        businessServiceListCreateModel.business_id = 0;
+        businessServiceListCreateModel.business_service_name = "";
+        isHide = "d-none";
+        StateHasChanged();
+    }
+
+    private async void AddBusinessServiceListAsync()
+    {
+        ResponseStanderd req = await ObjectBusinessServiceService.PostBusinessServiceList(businessServiceListCreateModel.business_id, businessServiceListCreateModel.business_service_name, BURL.backend_user_id);
+        errorMessage = req.message;
+        isHide = "";
+        StateHasChanged();
+        await Task.Delay(6000);
+        isHide = "d-none";
+        StateHasChanged();
+    }
+
+    private async void CancelBusinessServiceListAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "358426324932",
+    "project_id": "rcss-eb982",
+    "storage_bucket": "rcss-eb982.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358426324932:android:c1e703bcb5769624d3be91",
+        "android_client_info": {
+          "package_name": "com.example.rcss_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb1hub2i-xDh7Ly2d-KLzVIoRY13S1aKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358426324932:android:62350ec8c839c326d3be91",
+        "android_client_info": {
+          "package_name": "com.example.rcss_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb1hub2i-xDh7Ly2d-KLzVIoRY13S1aKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

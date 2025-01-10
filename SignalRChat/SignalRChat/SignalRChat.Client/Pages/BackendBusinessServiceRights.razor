@@ -1,0 +1,188 @@
+﻿@page "/BackendBusinessServiceRights/{backend_user_id:int}/{backend_user_name}"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@inject SignalRChat.Client.Service.BusinessService ObjectBusinessService
+@inject BusinessListService ObjectBusinessListService
+@inject IConfiguration configuration
+@inject IJSRuntime JSRuntime
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>客服聊室權限管理-選擇商家</PageTitle>
+@if (service)
+{
+    <h3>客服聊室權限管理-選擇商家</h3>
+    <div class="filters">
+        <label for="business_type_id">商家類型(id)</label>
+        <input id="business_type_id"
+               type="number"
+               class="form-control"
+               @bind="business_type_id" />
+        <label for="business_name">商家名稱</label>
+        <input id="business_name"
+               type="text"
+               class="form-control"
+               @bind="business_name" />
+        <label for="email">商家email</label>
+        <input id="email"
+               type="text"
+               class="form-control"
+               @bind="email" />
+        <label for="address">商家地址</label>
+        <input id="address"
+               type="text"
+               class="form-control"
+               @bind="address" />
+        <label for="phone">商家電話</label>
+        <input id="phone"
+               type="text"
+               class="form-control"
+               @bind="phone" />
+        <button class="btn btn-outline-primary"
+                @onclick="FilterSearchResults">
+            查詢
+        </button>
+        <button class="btn btn-outline-secondary"
+                @onclick="ClearSearchFilter">
+            清除
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+                @onclick="@CancelBackendBusinessServiceRightsAsync">
+            返回
+        </button>
+    </div>
+    <Grid TItem="DataBusinessList"
+          Class="table table-hover table-bordered table-striped"
+          DataProvider="BusinessListDataProvider"
+          AllowPaging="true"
+          Responsive="true"
+          PageSize=2
+          @ref="GridDBL">
+
+        <GridColumn TItem="DataBusinessList" HeaderText="商家id" PropertyName="business_id" SortString="business_id" SortKeySelector="item => item.business_id" FilterTextboxWidth="50" Class="d-none" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+            @context.business_id
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="商家名稱" PropertyName="business_name" SortString="business_name" SortKeySelector="item => item.business_name" FilterTextboxWidth="80">
+            @context.business_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="類型id" PropertyName="business_type_id" SortString="business_type_id" SortKeySelector="item => item.business_type_id" FilterTextboxWidth="100" Class="d-none">
+            @context.business_type_id
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="商家類型" PropertyName="business_type_name" SortString="business_type_name" SortKeySelector="item => item.business_type_name" FilterTextboxWidth="120">
+            @context.business_type_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="網址" PropertyName="business_url" SortString="business_url" SortKeySelector="item => item.business_url" FilterTextboxWidth="150">
+            @context.business_url
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="email" PropertyName="email" SortString="email" SortKeySelector="item => item.email" FilterTextboxWidth="80">
+            @context.email
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="地址" PropertyName="address" SortString="address" SortKeySelector="item => item.phone" FilterTextboxWidth="80">
+            @context.address
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList" HeaderText="電話" PropertyName="phone" SortString="phone" SortKeySelector="item => item.phone" FilterTextboxWidth="80">
+            @context.phone
+        </GridColumn>
+        <GridColumn TItem="DataBusinessList">
+            <Tooltip Title="Customer Service Rights" role="button">
+                <Icon Name="IconName.BuildingFillLock" Size=" IconSize.x5" @onclick="@(() => BusinessServiceRights(@context.business_id,backend_user_id,backend_user_name))" />
+            </Tooltip>
+        </GridColumn>
+    </Grid>
+}
+@code {
+    private DataBusinessList? selected;
+    private int business_type_id = 0;
+    private string business_name = "";
+    private string email = "";
+    private string phone = "";
+    private string address = "";
+    private string errorMessage = "";
+    private int business_id = 0;
+    private IQueryable<DataBusinessList> dataBusinessList;
+    private SignalRChat.Client.Model.BusinessList businessList;
+    private Grid<DataBusinessList> GridDBL;
+    private Modal modal1 = default!;
+    private Modal modal2 = default!;
+    private ResponseStanderd req = default!;
+    [Parameter]
+    public int backend_user_id { get; set; }
+    [Parameter]
+    public string backend_user_name { get; set; }
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool service = false;
+
+    private void BusinessServiceRights(int business_id, int backend_user_id, string backend_user_name)
+    {
+        NavManager.NavigateTo($"/BackendBusinessServiceRightsUpdate/{business_id}/{backend_user_id}/{backend_user_name}");
+    }
+ 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"錯誤: {ex.Message}";
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 33).Count() > 0)
+        {
+            service = true;
+        }
+        else
+        {
+            service = false;
+        }
+        business_type_id = 0;
+        business_name = "";
+        email = "";
+        phone = "";
+        address = "";
+        StateHasChanged();
+    }
+    private async Task<GridDataProviderResult<DataBusinessList>> BusinessListDataProvider(GridDataProviderRequest<DataBusinessList> request)
+    {
+        SignalRChat.Client.Model.BusinessList bList = await ObjectBusinessListService.GetBusinessList(address, phone, email, business_name, business_type_id, int.Parse(configuration["CountPerPage"]), request.PageNumber);
+        if (bList.code == "0")
+        {
+            businessList = bList;
+            return await Task.FromResult(new GridDataProviderResult<DataBusinessList> { Data = businessList.dataBusinessList, TotalCount = businessList.dataBusinessListCount });
+        }
+        else
+        {
+            Console.WriteLine($"錯誤代碼：{businessList.code},錯誤訊息：{businessList.message}");
+        }
+        return await Task.FromResult(new GridDataProviderResult<DataBusinessList> { Data = new List<DataBusinessList>(), TotalCount = 0 });
+        // };
+    }
+    private async void FilterSearchResults()
+    {
+        await GridDBL.RefreshDataAsync(new CancellationToken());
+        await GridDBL.ResetPageNumber();
+    }
+
+    private void ClearSearchFilter()
+    {
+        business_type_id = 0;
+        business_name = "";
+        email = "";
+        phone = "";
+        address = "";
+    }  
+    private async void CancelBackendBusinessServiceRightsAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}

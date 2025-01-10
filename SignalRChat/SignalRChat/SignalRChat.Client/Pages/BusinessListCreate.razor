@@ -1,0 +1,149 @@
+﻿@page "/BusinessListCreate"
+@rendermode InteractiveWebAssembly
+@using FluentValidation.Results
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject IJSRuntime JSRuntime
+@inject SignalRChat.Client.Service.BusinessService ObjectBusinessService
+@inject BusinessListService ObjectBusinessListService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>商家新增</PageTitle>
+@if(create) {
+    <h3>商家新增</h3>
+    <EditForm Model="@businessListCreateModel" OnValidSubmit="@AddBusinessListAsync">
+        <DataAnnotationsValidator @ref="dataAnnotationsValidator" />
+        <ValidationSummary />
+        <label for="business_type_id">商家類型(id)</label>
+        <select @bind="businessListCreateModel.business_type_id">
+            @if (dataBusinessType != null)
+            {
+                @foreach (var dBT in dataBusinessType)
+                {
+                    <option value="@dBT.business_type_id">@dBT.business_type_name</option>
+                }
+            }
+        </select><br/>
+        <label for="business_name">商家名稱</label>
+        <input id="business_name"
+        type="text"
+        class="form-control"
+        @bind="businessListCreateModel.business_name" />
+        <label for="email">商家email</label>
+        <input id="email"
+        type="text"
+        class="form-control"
+        @bind="businessListCreateModel.email" />
+        <label for="address">商家地址</label>
+        <input id="address"
+        type="text"
+        class="form-control"
+        @bind="businessListCreateModel.address" />
+        <label for="phone_country">商家國碼</label><br />
+        <select @bind="businessListCreateModel.phone_country">
+            @if (dataCountryCode != null)
+            {
+                @foreach (var dBT in dataCountryCode)
+                {
+                    <option value="@GetContryCode(dBT)">@GetContryCode(dBT)</option>
+                }
+            }
+        </select><br />
+        <label for="phone">商家電話</label>
+        <input id="phone"
+        type="number"
+        class="form-control"
+        @bind="businessListCreateModel.phone" />
+        <label for="business_url">商家網址</label>
+        <input id="business_url"
+        type="url"
+        class="form-control"
+        @bind="businessListCreateModel.business_url" />
+        <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+        <button class="btn btn-outline-primary" type="submit">
+            新增
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+        @onclick="@CancelBusinessListAsync">
+            取消
+        </button>
+    </EditForm>
+}
+@code {
+    private BusinessListCreateModel businessListCreateModel=new BusinessListCreateModel();
+    private DataAnnotationsValidator dataAnnotationsValidator = new DataAnnotationsValidator();
+    private string errorMessage = "";
+    private string isHide = "d-none";
+    private List<DataBusinessType>? dataBusinessType;    
+    private List<DataCountryCode>? dataCountryCode;
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool create = false;
+
+    private string GetContryCode(DataCountryCode CC)
+    {
+        return string.Format("{0}({1})", CC.country_id, CC.phone_country);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {        
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 5).Count() > 0)
+        {
+            create = true;
+        }
+        else
+        {
+            create = false;
+        }        
+        dataBusinessType= await ObjectBusinessListService.GetBusinessType();
+        dataCountryCode = await ObjectBusinessService.GetCountryCode();
+        businessListCreateModel.phone_country = "TW(886)";
+        businessListCreateModel.business_type_id = 1;
+        businessListCreateModel.business_name = "";
+        businessListCreateModel.email = "";
+        businessListCreateModel.phone = "";
+        businessListCreateModel.address = "";
+        businessListCreateModel.business_url = "";
+        isHide = "d-none";
+        StateHasChanged();
+    }
+
+    private void SubmitValidForm()
+    {
+
+    }
+
+    private async void AddBusinessListAsync()
+    {
+        ResponseStanderd req = await ObjectBusinessListService.PostBusinessList(businessListCreateModel.address, businessListCreateModel.phone, businessListCreateModel.email, businessListCreateModel.business_name, businessListCreateModel.business_type_id, BURL.backend_user_id, businessListCreateModel.business_url, string.Format("{0}", businessListCreateModel.phone_country.Substring(businessListCreateModel.phone_country.IndexOf("(") + 1, businessListCreateModel.phone_country.IndexOf(")") - businessListCreateModel.phone_country.IndexOf("(") - 1)), businessListCreateModel.phone_country.Substring(0, businessListCreateModel.phone_country.IndexOf("(")));
+        errorMessage = req.message;
+        isHide = "";
+        StateHasChanged();
+        await Task.Delay(6000);
+        isHide = "d-none";
+        StateHasChanged();
+    }
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("validate");
+    }
+    private async void CancelBusinessListAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}

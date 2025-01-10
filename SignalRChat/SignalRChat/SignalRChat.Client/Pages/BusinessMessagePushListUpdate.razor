@@ -1,0 +1,140 @@
+﻿@page "/BusinessMessagePushListUpdate/{business_id:int}/{business_message_push_id:int}"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+@inject SignalRChat.Client.Service.BusinessMessagePushService ObjectBusinessMessagePushService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>廣告/行銷活動修改</PageTitle>
+@if (update)
+{
+    <h3>廣告/行銷活動修改</h3>
+    <EditForm Model="@businessMessagePushListUpdateModel" enctype="multipart/form-data" Enhance FormName="file-form" OnValidSubmit="@UpdateBusinessMessagePushListAsync">
+        <DataAnnotationsValidator @ref="dataAnnotationsValidator" />
+        <ValidationSummary />
+        <label for="message_title">訊息標題</label>
+        <input id="message_title"
+        type="text"
+        class="form-control"
+        @bind="businessMessagePushListUpdateModel.message_title" />
+        <label for="message_content">訊息內容</label>
+        <textarea id="message_content" rows="4" cols="20"
+        class="form-control"
+        @bind="businessMessagePushListUpdateModel.message_content" />
+        <label for="phone">活動網址</label>
+        <input id="message_url"
+        type="text"
+        class="form-control"
+        @bind="businessMessagePushListUpdateModel.message_url" />
+        <label for="push_start_date">活動啟始日</label>
+        <input id="push_start_date"
+        type="datetime-local"
+        class="form-control"
+        @bind="businessMessagePushListUpdateModel.push_start_date" />
+        <label for="push_end_date">活動啟始日</label>
+        <input id="push_end_date"
+        type="datetime-local"
+        class="form-control"
+        @bind="businessMessagePushListUpdateModel.push_end_date" />
+        <label for="message_image_file">重設活動圖檔</label>
+        <InputFile name="businessMessagePushListUpdateModel.message_image_file" class="form-control" OnChange="OnInputFileChange" />
+        <label for="message_image">目前活動圖檔</label>
+        <img src=@string.Format("http://10.10.10.207:8082/{0}",businessMessagePushListUpdateModel.message_image) width="150" height="150" /><br/>
+        <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+        <button class="btn btn-outline-primary" type="submit">
+            修改
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+        @onclick="@CancelBusinessMessagePushListAsync">
+            取消
+        </button>
+    </EditForm>
+}
+@code {
+    [SupplyParameterFromForm(FormName = "file-form")]
+    private BusinessMessagePushListUpdateModel businessMessagePushListUpdateModel { get; set; } = new BusinessMessagePushListUpdateModel();
+    private DataAnnotationsValidator dataAnnotationsValidator = new DataAnnotationsValidator();
+    [Parameter]
+    public int business_id { get; set; }
+    [Parameter]
+    public int business_message_push_id { get; set; }
+    private string errorMessage = "";
+    private string isHide = "d-none";
+    private UpdateMessagePush? dataUpdateMessagePush;
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool update = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 27).Count() > 0)
+        {
+            update = true;
+        }
+        else
+        {
+            update = false;
+        }
+        dataUpdateMessagePush = await ObjectBusinessMessagePushService.GetUpdateMessagePush(business_id, business_message_push_id);
+        if (dataUpdateMessagePush.code == "0")
+        {
+            businessMessagePushListUpdateModel.message_title = dataUpdateMessagePush.data.message_title;
+            businessMessagePushListUpdateModel.message_content = dataUpdateMessagePush.data.message_content;
+            businessMessagePushListUpdateModel.message_url = dataUpdateMessagePush.data.message_url;
+            businessMessagePushListUpdateModel.push_start_date = dataUpdateMessagePush.data.push_start_date;
+            businessMessagePushListUpdateModel.push_end_date = dataUpdateMessagePush.data.push_end_date;
+            businessMessagePushListUpdateModel.message_image = dataUpdateMessagePush.data.message_image;
+            businessMessagePushListUpdateModel.backend_user_id = 0;  // 未來要改為登入用戶id
+            isHide = "d-none";
+        }
+        else
+        {
+            isHide = "";
+            errorMessage = dataUpdateMessagePush.message;
+        }
+        StateHasChanged();
+    }
+    private string GetContryCode(DataCountryCode CC)
+    {
+        return string.Format("{0}({1})", CC.country_id, CC.phone_country);
+    }
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        businessMessagePushListUpdateModel.message_image_file = e.GetMultipleFiles();
+        // Console.WriteLine(businessMessagePushListUpdateModel.message_image_file[0].Name);
+    }
+
+    private async void UpdateBusinessMessagePushListAsync()
+    {
+        businessMessagePushListUpdateModel.backend_user_id = BURL.backend_user_id;
+        ResponseStanderd req = await ObjectBusinessMessagePushService.PutBusinessMessagePushList(businessMessagePushListUpdateModel, business_id, business_message_push_id);
+        errorMessage = req.message;
+        isHide = "";
+        StateHasChanged();
+        await Task.Delay(6000);
+        isHide = "d-none";
+        StateHasChanged();
+    }
+
+    private async void CancelBusinessMessagePushListAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}

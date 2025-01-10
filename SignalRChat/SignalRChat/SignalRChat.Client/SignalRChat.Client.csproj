@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Component.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Accelist.FluentValidation.Blazor" Version="4.0.0" />
+    <PackageReference Include="Blazor.Bootstrap" Version="3.1.1" />
+    <PackageReference Include="Blazored.SessionStorage" Version="2.4.0" />
+    <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.10" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="/Pages/BusinessList.razor.css" CssScope="custom-scope-identifier" />
+  </ItemGroup>
+
+</Project>

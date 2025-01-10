@@ -1,0 +1,153 @@
+﻿@page "/chat/{groupName}/{serviceName}/{uuid}/{businessId}"
+@rendermode InteractiveWebAssembly
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Microsoft.AspNetCore.WebUtilities;
+@using SignalRChat.Client.Service;
+@using SignalRChat.Client.Model
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject ChatService chatService
+@inject NavigationManager Navigator
+@inject IConfiguration configuration
+
+<PageTitle>Chat Room</PageTitle>
+
+<input type="text" @bind="@message" placeholder="Message" />
+<br />
+<button @onclick="SendMessage">Send</button>
+<br />
+
+<ul>
+    @foreach(var msg in @messages)
+    {
+        <li>@msg</li>
+    }
+</ul>
+
+@code {
+    private HubConnection? hubConnection;
+    private List<string> messages = [];
+    [Parameter]
+    public string groupName { get; set; }
+    [Parameter]
+    public string serviceName { get; set; }
+    [Parameter]
+    public string uuid { get; set; }
+    [Parameter]
+    public string businessId { get; set; }
+    public string? message;
+
+    private ChatService.RecentHistoryMessages[] recentHistoryMessagesData;
+    private ChatService.RecentHistoryMessagesList recentHistoryMessagesList;
+
+    private BackendUserRightList BURL;
+    private bool success;
+    private string errorMessage;
+
+    private int backendUserId;
+
+    private string seperationLine = "------------------------------";    
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+            await ShowHistoryMessages();
+            await chatService.SetUnreadMessagesCountToZero(uuid, int.Parse(businessId), groupName.Split('^')[0], BURL.backend_user_id);
+            //Console.WriteLine(BURL.backend_user_id);
+        }
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        //hubConnection = new HubConnectionBuilder().WithUrl("http://10.10.10.207:5211/chathub").Build();
+        hubConnection = new HubConnectionBuilder().WithUrl("http://localhost:5101/chathub").Build();
+
+        Console.WriteLine(uuid);
+
+        hubConnection.On<string, string, string, string>("SendGroupMsg", async (groupName, userName, message, timestamp) =>
+        {
+            // var concatMessage = $"[{groupName}] --- {userName}: {message} --- [{timestamp.Split(' ')[1]}]";
+            var concatMessage = $"{userName}: {message} --- [{timestamp.Split(' ')[1].Substring(0, 8)}]";
+            messages.Add(concatMessage);
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.StartAsync();
+        Console.WriteLine(hubConnection.State);
+
+        await hubConnection.SendAsync("JoinGroup", groupName, serviceName);
+    }
+
+    private async Task JoinGroup(string groupName, string userName)
+    {
+        await hubConnection.SendAsync("JoinGroup", groupName, userName);
+    }
+
+    private async Task SendMessage()
+    {
+        try
+        {
+            await hubConnection!.SendAsync("SendMessageToGroup", groupName, serviceName, message, int.Parse(businessId), uuid, false, BURL.backend_user_id, false, true,BURL.backend_user_name);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"錯誤: {ex.Message}");
+        }
+        finally
+        {
+            message = "";
+        }
+
+    }
+
+    private async Task ShowHistoryMessages()
+    {
+        try
+        {
+            recentHistoryMessagesList = await chatService.GetRecentHistoryMessagesList(uuid, businessId, serviceName);
+            if (recentHistoryMessagesList != null && recentHistoryMessagesList.data != null)
+            {
+                recentHistoryMessagesData = recentHistoryMessagesList.data;
+            }
+            else
+            {
+                recentHistoryMessagesData = new ChatService.RecentHistoryMessages[0];
+            }
+
+            backendUserId = recentHistoryMessagesData[0].backend_user_id;
+            Array.Reverse(recentHistoryMessagesData);
+
+            messages.Add($"Chat Room: {recentHistoryMessagesData[0].business_service_name} - {recentHistoryMessagesData[0].user_name}\n\n");
+
+            bool isSeperationLineAdded = false;
+
+            foreach (var recentHistoryMessage in recentHistoryMessagesData)
+            {
+                if (!recentHistoryMessage.is_backend_user_read && !isSeperationLineAdded)
+                {
+                    Console.WriteLine("Adding line...");
+                    messages.Add(seperationLine);
+                    isSeperationLineAdded = true;
+                }
+
+                if (recentHistoryMessage.is_user_talk)
+                {
+                    // messages.Add($"[{groupName}] --- {uuid}: {recentHistoryMessage.talk_content} --- [{recentHistoryMessage.created_date.ToString("HH:mm:ss")}]");
+                    messages.Add($"{recentHistoryMessage.user_name}: {recentHistoryMessage.talk_content} --- [{recentHistoryMessage.created_date.ToString("HH:mm:ss")}]");
+                }
+                else
+                {
+                    // messages.Add($"[{groupName}] --- {recentHistoryMessage.backend_user_name}: {recentHistoryMessage.talk_content} --- [{recentHistoryMessage.created_date.ToString("HH:mm:ss")}]");
+                    messages.Add($"{recentHistoryMessage.backend_user_name}: {recentHistoryMessage.talk_content} --- [{recentHistoryMessage.created_date.ToString("HH:mm:ss")}]");
+                }
+            }
+            InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error: {ex.Message}";
+        }
+
+    }
+}

@@ -1,0 +1,179 @@
+﻿@page "/BackendUserRights/{backend_user_id:int}/{backend_user_name}"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+
+@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+@inject SignalRChat.Client.Service.BackendUserService ObjectBackendUserService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>後台用戶權限設定</PageTitle>
+<h3>後台用戶權限設定(@backend_user_name)</h3>
+@if(right) {
+    <EditForm Model="@switchRightsValue" OnValidSubmit="@UpdateBackendUserRightsAsync">
+        @if (switchRightsValue != null)
+        {
+            @foreach (var bsr in switchRightsValue)
+            {
+                if(!bsr.Key.Contains("-"))
+                {
+                    <Switch @bind-Value="@bsr.Value.SwitchValue" Label="@bsr.Value.backend_right_group_name" Style="color:red" />
+                }
+                else
+                {
+                    <Switch @bind-Value='@bsr.Value.SwitchValue' Label="@bsr.Value.backend_right_name" />
+                }
+            }
+        }
+        <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+        <button class="btn btn-outline-primary" type="submit">
+            修改
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+        @onclick="@CancelUpdateBackendRightsListAsync">
+            取消
+        </button>
+    </EditForm>
+}
+@code {
+    // private bool agree1;
+    // @ref='switchRights["1-1"]' ValueChanged="SwitchChanged"
+    private SignalRChat.Client.Model.BackendUserRights backendUserRights = new SignalRChat.Client.Model.BackendUserRights();
+    private SignalRChat.Client.Model.BackendRights backendRights = new SignalRChat.Client.Model.BackendRights();
+    private DataAnnotationsValidator dataAnnotationsValidator = new DataAnnotationsValidator();
+    private Dictionary<string, SwitchDataRights> switchRightsValue = new Dictionary<string, SwitchDataRights>();
+    private string errorMessage = "";
+    private string isHide = "d-none";
+    [Parameter]
+    public int backend_user_id { get; set; }
+    [Parameter]
+    public string backend_user_name { get; set; }
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool right = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        backendRights = await ObjectBackendUserService.GetBackendRights();
+        if (backendRights.code == "0")
+        {
+            await SetRights(backendRights.dataBackendRights);
+        }
+        backendUserRights = await ObjectBackendUserService.GetUserRights(backend_user_id);
+        if (backendUserRights.code == "0")
+        {
+            // foreach (var r in backendUserRights.dataBackendUserRights)
+            //     Console.WriteLine($"{r.backend_right_group_id}/{r.backend_right_id}");
+            await SetUserRights(backendUserRights.dataBackendUserRights, switchRightsValue);
+            isHide = "d-none";
+            // StateHasChanged();
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 24).Count() > 0)
+        {
+            right = true;
+        }
+        else
+        {
+            right = false;
+        }        
+        StateHasChanged();
+    }
+    private async Task SetRights(DataBackendRights[]? dataBackendRights)
+    {
+        // if (switchRightsValue.Count > 0)
+        //     return;
+        var groupName = "";
+        foreach (var dbr in dataBackendRights)
+        {
+            if(dbr.backend_right_group_name!=groupName)
+            {
+                switchRightsValue.Add(dbr.backend_right_group_id.ToString(), new SwitchDataRights
+                {
+                    backend_right_group_id=dbr.backend_right_group_id,
+                    backend_right_group_name=dbr.backend_right_group_name,
+                    backend_right_id=dbr.backend_right_id,
+                    backend_right_name=dbr.backend_right_name
+                }
+                );
+                groupName = dbr.backend_right_group_name;
+            }
+            switchRightsValue.Add($"{dbr.backend_right_group_id}-{dbr.backend_right_id}", new SwitchDataRights
+                {
+                    backend_right_group_id = dbr.backend_right_group_id,
+                    backend_right_group_name = dbr.backend_right_group_name,
+                    backend_right_id = dbr.backend_right_id,
+                    backend_right_name = dbr.backend_right_name
+                }
+                );
+        }
+        foreach(var sdr in switchRightsValue)
+        {
+            Console.WriteLine(sdr.Key, sdr.Value.backend_right_name);
+        }
+    }    
+    private async Task SetUserRights(DataBackendUserRights[]? dataBackendUserRights, Dictionary<string, SwitchDataRights> switchRightsValue)
+    {
+        // var groupName = "";
+        foreach (var dbr in dataBackendUserRights)
+        {
+            if (switchRightsValue.ContainsKey($"{dbr.backend_right_group_id}-{dbr.backend_right_id}"))
+            {
+                switchRightsValue[$"{dbr.backend_right_group_id}-{dbr.backend_right_id}"].SwitchValue = true;
+            }            
+        }        
+    }
+    private async void UpdateBackendUserRightsAsync()
+    {
+        List<BackendUserRightsUpdateModel> backendUserRightsUpdateModel = SetBackendUserRights(backend_user_id,switchRightsValue);
+        ResponseStanderd req = await ObjectBackendUserService.PostBackendUserRights(backend_user_id, backendUserRightsUpdateModel);
+        errorMessage = req.message;
+        isHide = "";
+        StateHasChanged();
+        await Task.Delay(6000);
+        isHide = "d-none";
+        StateHasChanged();
+    }
+    private List<BackendUserRightsUpdateModel> SetBackendUserRights(int backenduserid,Dictionary<string, SwitchDataRights> switchRightsValue)
+    {
+        List<BackendUserRightsUpdateModel> result = new List<BackendUserRightsUpdateModel>();
+        foreach (var dbr in switchRightsValue)
+        {
+            if (dbr.Key.Contains("-"))
+            {
+                if (dbr.Value.SwitchValue)
+                {
+                    result.Add(new BackendUserRightsUpdateModel
+                        {
+                            backend_user_id = backenduserid,
+                            backend_right_group_id=dbr.Value.backend_right_group_id,
+                            backend_right_id=dbr.Value.backend_right_id
+                        });
+                }
+            }
+        }
+        return result;
+    }
+    private async void CancelUpdateBackendRightsListAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }    
+}

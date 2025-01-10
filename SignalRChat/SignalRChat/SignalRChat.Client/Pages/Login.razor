@@ -1,0 +1,56 @@
+﻿@page "/"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Components.Layout
+@using SignalRChat.Client.Model
+@layout NoLayout
+@inject SignalRChat.Client.Service.AuthService authService
+@inject NavigationManager NavManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>後台用戶登入</PageTitle>
+<h3>後台用戶登入</h3>
+<EditForm Model="@backendLoginModel" OnValidSubmit="@Logon">
+    <DataAnnotationsValidator @ref="dataAnnotationsValidator" />
+    <ValidationSummary />
+    <label for="email">email</label>
+    <input id="email"
+    type="text"
+    class="form-control"
+    @bind="backendLoginModel.email" />
+    <label for="password">密碼</label>
+    <input id="password"
+    type="password"
+    class="form-control"
+    @bind="backendLoginModel.password" />
+    <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+    <button class="btn btn-outline-primary"
+    type="submit">
+        登入
+    </button>   
+</EditForm>
+@code {
+    public BackendLoginModel backendLoginModel = new BackendLoginModel();
+    private DataAnnotationsValidator dataAnnotationsValidator = new DataAnnotationsValidator();
+    private string errorMessage = "";
+    private string isHide = "d-none";
+
+    private async void Logon()
+    {
+        BackendUserRightList backendUserRightList = await authService.BackendUserLogin(backendLoginModel);
+        if(backendUserRightList.code=="0")
+        {
+            await sessionStorage.SetItemAsync<BackendUserRightList>("backendUserRightList", backendUserRightList);
+            //var BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+            NavManager.NavigateTo("/Home");
+        }
+        else
+        {
+            errorMessage = backendUserRightList.message;
+            isHide = "";
+            StateHasChanged();
+            await Task.Delay(20000);
+            isHide = "d-none";
+            StateHasChanged();
+        }
+    }
+}

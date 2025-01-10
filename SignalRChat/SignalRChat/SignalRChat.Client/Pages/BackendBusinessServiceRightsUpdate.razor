@@ -1,0 +1,180 @@
+﻿@page "/BackendBusinessServiceRightsUpdate/{business_id:int}/{backend_user_id:int}/{backend_user_name}"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+
+@inject NavigationManager NavManager
+@inject SignalRChat.Client.Service.BusinessServiceService ObjectBusinessServiceService
+@inject IJSRuntime JSRuntime
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>客服聊室權限管理-設定用戶客服權限</PageTitle>
+@if (service)
+{
+    <h3>客服聊室權限管理-設定用戶(@backend_user_name)之商家(@business_id)權限</h3>
+    <EditForm Model="@businessServiceRightsValue" OnValidSubmit="@UpdateServiceRightsAsync">
+        @if (businessServiceRightsValue != null)
+        {
+            @foreach (var bsr in businessServiceRightsValue)
+            {
+                <Switch @bind-Value='bsr.SwitchValue' Label="@bsr.business_service_name" />
+            }
+        }
+        <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+        <button class="btn btn-outline-primary" type="submit">
+            修改
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+        @onclick="@CancelUpdateServiceRightsAsync">
+            取消
+        </button>
+    </EditForm>
+}
+@code {
+    [Parameter]
+    public int business_id { get; set; }
+    [Parameter]
+    public int backend_user_id { get; set; }
+    [Parameter]
+    public string backend_user_name { get; set; }
+
+    private SignalRChat.Client.Model.BusinessServiceList businessServiceList;
+    private DataBusinessServiceList[]? dataBusinessServiceList;
+    private SignalRChat.Client.Model.BackendUserServiceRights backendUserServiceRights;
+    private DataBackendUserServiceRights[]? dataBackendUserServiceRights;
+    private List<UserServiceRights> businessServiceRightsValue = new List<UserServiceRights>();
+
+    private string errorMessage = "";
+    private string isHide = "d-none";
+
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool service = false;
+
+    private async void CancelUpdateServiceRightsAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+
+    private async void UpdateServiceRightsAsync()
+    {
+        List<DataBackendUserServiceRights> dataBackendUserServiceRights = SetBackendServiceRights(backend_user_id, businessServiceRightsValue);
+        ResponseStanderd req = await ObjectBusinessServiceService.PostBackendServiceRights(backend_user_id, dataBackendUserServiceRights);
+        errorMessage = req.message;
+        isHide = "";
+        StateHasChanged();
+        await Task.Delay(6000);
+        isHide = "d-none";
+        StateHasChanged();
+    }
+    private List<DataBackendUserServiceRights> SetBackendServiceRights(int backenduserid, List<UserServiceRights> switchRightsValue)
+    {
+        // foreach (var dbr in switchRightsValue)
+        // {
+        //     Console.WriteLine($"{dbr.backend_user_id}/{dbr.business_id}/{dbr.business_service_name}/{dbr.SwitchValue}");
+        // }
+        List<DataBackendUserServiceRights> result = new List<DataBackendUserServiceRights>();
+        foreach (var dbr in switchRightsValue)
+        {
+            if (dbr.SwitchValue)
+            {                
+                result.Add(new DataBackendUserServiceRights
+                        {
+                            backend_user_id = backenduserid,
+                            business_id = dbr.business_id,
+                            business_service_name = dbr.business_service_name
+                        });
+            }
+        }
+        // foreach (var dbr in result)
+        // {
+        //     Console.WriteLine($"{dbr.backend_user_id}/{dbr.business_id}/{dbr.business_service_name}");
+        // }
+        return result;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SignalRChat.Client.Model.BusinessServiceList bList = await ObjectBusinessServiceService.GetBusinessServiceList("", business_id, 1000, 1);
+        if (bList.code == "0")
+        {
+            businessServiceList = bList;
+            dataBusinessServiceList = businessServiceList.data;
+        }
+        SignalRChat.Client.Model.BackendUserServiceRights BUSR = await ObjectBusinessServiceService.GetBackendServiceRights(backend_user_id);
+        if (BUSR.code == "0")
+        {
+            backendUserServiceRights = BUSR;
+            dataBackendUserServiceRights = backendUserServiceRights.dataBackendUserServiceRights;
+            foreach (var dBSL in dataBusinessServiceList)
+            {
+                if (dataBackendUserServiceRights != null)
+                {
+                    if (dataBackendUserServiceRights.Where((e) =>e.business_id==dBSL.business_id && e.business_service_name==dBSL.business_service_name).Count()>0)
+                    {
+                        businessServiceRightsValue.Add(new UserServiceRights
+                            {
+                                backend_user_id = backend_user_id,
+                                business_id = dBSL.business_id,
+                                business_service_name = dBSL.business_service_name,
+                                SwitchValue = true
+                            }
+                    );
+                    }
+                    else
+                    {
+                        businessServiceRightsValue.Add(new UserServiceRights
+                            {
+                                backend_user_id = backend_user_id,
+                                business_id = dBSL.business_id,
+                                business_service_name = dBSL.business_service_name,
+                                SwitchValue = false
+                            }
+                    );
+                    }
+                }
+                else
+                {
+                    businessServiceRightsValue.Add(new UserServiceRights
+                        {
+                            backend_user_id = backend_user_id,
+                            business_id = dBSL.business_id,
+                            business_service_name = dBSL.business_service_name,
+                            SwitchValue = false
+                        }
+                    );
+                }
+            }            
+        }
+        isHide = "d-none";
+        StateHasChanged();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"錯誤: {ex.Message}";
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 33).Count() > 0)
+        {
+            service = true;
+        }
+        else
+        {
+            service = false;
+        }
+        StateHasChanged();
+    }
+}

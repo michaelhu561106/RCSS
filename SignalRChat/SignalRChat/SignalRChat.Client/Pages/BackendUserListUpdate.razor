@@ -1,0 +1,161 @@
+﻿@page "/BackendUserListUpdate/{backend_user_id:int}"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+@inject SignalRChat.Client.Service.BusinessService ObjectBusinessService
+@inject SignalRChat.Client.Service.BackendUserService ObjectBackendUserService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>後台用戶修改</PageTitle>
+@if(update) {
+    <h3>後台用戶修改</h3>
+    <EditForm Model="@backendUserListUpdateModel" OnValidSubmit="@UpdateBackendUserListAsync">
+        <DataAnnotationsValidator @ref="dataAnnotationsValidator" />
+        <ValidationSummary />
+        <label for="business_id">商家id</label>
+        <input id="business_id"
+        type="number"
+        class="form-control"
+        @bind="backendUserListUpdateModel.business_id" />
+        <label for="backend_user_name">用戶名稱</label>
+        <input id="backend_user_name"
+        type="text"
+        class="form-control"
+        @bind="backendUserListUpdateModel.backend_user_name" />
+        <label for="email">email</label>
+        <input id="email"
+        type="text"
+        class="form-control"
+        @bind="backendUserListUpdateModel.email" />
+        <label for="phone_country">電話國碼</label><br />
+        <select @bind="backendUserListUpdateModel.phone_country">
+            @if (dataCountryCode != null)
+            {
+                @foreach (var dBT in dataCountryCode)
+                {
+                    <option value="@GetContryCode(dBT)">@GetContryCode(dBT)</option>
+                }
+            }
+        </select><br />
+        <label for="phone">電話(第1個0不用輸入)</label>
+        <input id="phone"
+        type="text"
+        class="form-control"
+        @bind="backendUserListUpdateModel.phone" />
+        <label for="password">密碼</label>
+        <input id="password"
+        type="password"
+        class="form-control"
+        @bind="backendUserListUpdateModel.password" />
+        <label for="passwordAgain">再次輸入密碼</label>
+        <input id="passwordAgain"
+        type="password"
+        class="form-control"
+        @bind="backendUserListUpdateModel.passwordAgain" />
+        <Alert Color="AlertColor.Warning" Class="@isHide" Dismissable="true">@errorMessage </Alert>
+        <button class="btn btn-outline-primary" type="submit">
+            修改
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+        @onclick="@CancelUpdateBackendUserListAsync">
+            取消
+        </button>
+    </EditForm>
+}
+@code {
+    private BackendUserListUpdateModel backendUserListUpdateModel = new BackendUserListUpdateModel();
+    private DataAnnotationsValidator dataAnnotationsValidator = new DataAnnotationsValidator();
+    private string errorMessage = "";
+    private string isHide = "d-none";
+    private UpdateBackendUserList? dataBackendUserList;
+    private List<DataCountryCode>? dataCountryCode;    
+    [Parameter]
+    public int backend_user_id { get; set; }
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool update = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 18).Count() > 0)
+        {
+            update = true;
+        }
+        else
+        {
+            update = false;
+        }
+        dataCountryCode = await ObjectBusinessService.GetCountryCode();
+        dataBackendUserList = await ObjectBackendUserService.GetUpdateBackendUserList(backend_user_id);
+        if (dataBackendUserList.code == "0" & dataBackendUserList.data != null)
+        {
+            backendUserListUpdateModel.business_id = dataBackendUserList.data.business_id;
+            backendUserListUpdateModel.backend_user_name = dataBackendUserList.data.backend_user_name;
+            backendUserListUpdateModel.email = dataBackendUserList.data.email;
+            backendUserListUpdateModel.phone = dataBackendUserList.data.phone;
+            backendUserListUpdateModel.phone_country = string.Format("{0}({1})", dataBackendUserList.data.country_id, dataBackendUserList.data.phone_country);
+            backendUserListUpdateModel.password = "";
+            backendUserListUpdateModel.passwordAgain = "";
+        }
+        else
+        {
+            backendUserListUpdateModel.business_id = 0;
+            backendUserListUpdateModel.backend_user_name = "";
+            backendUserListUpdateModel.email = "";
+            backendUserListUpdateModel.phone = "";
+            backendUserListUpdateModel.phone_country = "";
+            backendUserListUpdateModel.password = "";
+            backendUserListUpdateModel.passwordAgain = "";
+        }
+        isHide = "d-none";
+        StateHasChanged();
+    }
+    private async void UpdateBackendUserListAsync()
+    {
+        // Console.WriteLine(backendUserListUpdateModel.password.Length.ToString());
+        if ((backendUserListUpdateModel.password.Length>1 && backendUserListUpdateModel.password.Length < 8) || backendUserListUpdateModel.password.Length > 20)
+        {
+            errorMessage = "密碼長度必須為8~20個文字";
+            isHide = "";
+            StateHasChanged();
+            await Task.Delay(6000);
+            isHide = "d-none";
+            StateHasChanged();
+        }
+        else
+        {
+            ResponseStanderd req = await ObjectBackendUserService.PutBackendUserList(backend_user_id, backendUserListUpdateModel.backend_user_name, backendUserListUpdateModel.email, backendUserListUpdateModel.password, backendUserListUpdateModel.business_id, backendUserListUpdateModel.phone, string.Format("{0}", backendUserListUpdateModel.phone_country.Substring(backendUserListUpdateModel.phone_country.IndexOf("(") + 1, backendUserListUpdateModel.phone_country.IndexOf(")") - backendUserListUpdateModel.phone_country.IndexOf("(") - 1)), backendUserListUpdateModel.phone_country.Substring(0, backendUserListUpdateModel.phone_country.IndexOf("(")), BURL.backend_user_id);
+            errorMessage = req.message;
+            isHide = "";
+            StateHasChanged();
+            await Task.Delay(6000);
+            isHide = "d-none";
+            StateHasChanged();
+        }        
+    }
+    private string GetContryCode(DataCountryCode CC)
+    {
+        return string.Format("{0}({1})", CC.country_id, CC.phone_country);
+    }
+    private async void CancelUpdateBackendUserListAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}

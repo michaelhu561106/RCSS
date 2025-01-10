@@ -1,0 +1,156 @@
+﻿@page "/BusinessServiceTalksHisrory"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@inject SignalRChat.Client.Service.BusinessServiceService ObjectBusinessServiceTalksService
+@inject BusinessListService ObjectBusinessListService
+@inject IConfiguration configuration
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>客服聊天歷史記錄</PageTitle>
+<h3>客服聊天歷史記錄</h3>
+@if (read)
+{
+    <div class="filters">
+        <label for="business_service_name">客服聊天室名稱</label>
+        <input id="business_service_name"
+        type="text"
+        class="form-control"
+        @bind="business_service_name" />
+        <label for="user_name">用戶名稱</label>
+        <input id="user_name"
+        type="text"
+        class="form-control"
+        @bind="user_name" />
+        <label for="created_date_start">訊息傳送時間(起)</label>
+        <input id="created_date_start"
+        type="text"
+        class="form-control"
+        @bind="created_date_start" />
+        <label for="address">訊息傳送時間(迄)</label>
+        <input id="address"
+        type="text"
+        class="form-control"
+        @bind="created_date_end" />
+        <button class="btn btn-outline-primary"
+        @onclick="FilterSearchResults">
+            查詢
+        </button>
+        <button class="btn btn-outline-secondary"
+        @onclick="ClearSearchFilter">
+            清除
+        </button>
+    </div>
+    <Grid TItem="DataBusinessServiceTalks"
+    Class="table table-hover table-bordered table-striped"
+    DataProvider="BusinessServiceTalksDataProvider"
+    AllowPaging="true"
+    Responsive="true"
+    PageSize=2
+    @ref="GridDBL">
+
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="商家id" PropertyName="business_id" SortString="business_id" SortKeySelector="item => item.business_id" FilterTextboxWidth="50" Class="d-none" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+            @context.business_id
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="客服聊天室" PropertyName="business_service_name" SortString="business_service_name" SortKeySelector="item => item.business_service_name" FilterTextboxWidth="80">
+            @context.business_service_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="用戶名" PropertyName="user_name" SortString="user_name" SortKeySelector="item => item.user_name" FilterTextboxWidth="100">
+            @context.user_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="傳送時間" PropertyName="created_date" SortString="created_date" SortKeySelector="item => item.created_date" FilterTextboxWidth="120">
+            @context.created_date
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="用戶傳送" PropertyName="is_user_talk" SortString="is_user_talk" SortKeySelector="item => item.is_user_talk" FilterTextboxWidth="150">
+            <Switch @bind-Value='@context.is_user_talk' Label="" />
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="客服名稱" PropertyName="backend_user_name" SortString="backend_user_name" SortKeySelector="item => item.backend_user_name" FilterTextboxWidth="80">
+            @context.backend_user_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="內容" PropertyName="talk_content" SortString="talk_content" SortKeySelector="item => item.talk_content" FilterTextboxWidth="80">
+            @context.talk_content
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="用戶己讀" PropertyName="is_user_read" SortString="is_user_read" SortKeySelector="item => item.is_user_read" FilterTextboxWidth="80">
+            <Switch @bind-Value='@context.is_user_read' Label="" />
+        </GridColumn>
+        <GridColumn TItem="DataBusinessServiceTalks" HeaderText="客服己讀" PropertyName="is_backend_user_read" SortString="is_backend_user_read" SortKeySelector="item => item.is_backend_user_read" FilterTextboxWidth="80">
+            <Switch @bind-Value='@context.is_backend_user_read' Label="" />
+        </GridColumn>
+    </Grid>
+}
+@code {
+    public int backend_user_id = 2;
+    private string business_service_name = "..";
+    private string user_name = "..";
+    private string created_date_start;
+    private string created_date_end;
+    private string errorMessage = "";
+    private IQueryable<DataBusinessServiceTalks> dataBusinessServiceTalks;
+    private SignalRChat.Client.Model.BusinessServiceTalks businessList;
+    private Grid<DataBusinessServiceTalks> GridDBL;
+    private ResponseStanderd req = default!;
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool read = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"錯誤: {ex.Message}";
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 25).Count() > 0)
+        {
+            read = true;
+        }
+        else
+        {
+            read = false;
+        }
+        business_service_name = "..";
+        user_name = "..";
+        created_date_start = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+        created_date_end = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+        StateHasChanged();
+    }
+    private async Task<GridDataProviderResult<DataBusinessServiceTalks>> BusinessServiceTalksDataProvider(GridDataProviderRequest<DataBusinessServiceTalks> request)
+    {
+        SignalRChat.Client.Model.BusinessServiceTalks bList = await ObjectBusinessServiceTalksService.GetBusinessServiceTalksHistory(BURL.backend_user_id, business_service_name, user_name, created_date_start, created_date_end, int.Parse(configuration["CountPerPage"]), request.PageNumber);
+        if (bList.code == "0")
+        {
+            businessList = bList;
+            return await Task.FromResult(new GridDataProviderResult<DataBusinessServiceTalks> { Data = businessList.data, TotalCount = businessList.dataBusinessServiceTalksCount });
+        }
+        else
+        {
+            Console.WriteLine($"錯誤代碼：{businessList.code},錯誤訊息：{businessList.message}");
+        }
+        return await Task.FromResult(new GridDataProviderResult<DataBusinessServiceTalks> { Data = new List<DataBusinessServiceTalks>(), TotalCount = 0 });
+    }
+    private async void FilterSearchResults()
+    {
+        await GridDBL.RefreshDataAsync(new CancellationToken());
+        await GridDBL.ResetPageNumber();
+    }
+
+    private void ClearSearchFilter()
+    {
+        business_service_name = "..";
+        user_name = "..";
+        created_date_start = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+        created_date_end = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+    }
+}

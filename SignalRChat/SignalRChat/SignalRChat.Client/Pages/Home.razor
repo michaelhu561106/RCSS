@@ -1,0 +1,26 @@
+﻿@page "/home"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Model
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>註冊寶後台</PageTitle>
+
+<h1>歡迎來到註冊寶後台</h1>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // if (firstRender)
+        // {
+            try
+            {
+                var BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+                //Console.WriteLine(BURL.backend_user_id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"錯誤: {ex.Message}");
+            }
+        // }
+    }
+}

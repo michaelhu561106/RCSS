@@ -1,0 +1,285 @@
+﻿@page "/BusinessMessagePushList"
+@rendermode InteractiveWebAssembly
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@inject NavigationManager NavManager
+@* @inject SignalRChat.Client.Service.BusinessService ObjectBusinessService *@
+@inject SignalRChat.Client.Service.BusinessMessagePushService ObjectBusinessMessagePushService
+@inject IConfiguration configuration
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>廣告/行銷管理</PageTitle>
+<h3>廣告/行銷管理</h3>
+@if (read)
+{
+    <div class="filters">
+        <label for="business_id">商家id</label>
+        <input id="business_id"
+        type="number"
+        class="form-control"
+        @bind="business_id" />
+        <label for="message_title">訊息標題</label>
+        <input id="message_title"
+        type="text"
+        class="form-control"
+        @bind="message_title" />
+        <label for="push_start_date_s">訊息推播啟始時間(起)</label>
+        <input id="push_start_date_s"
+        type="text"
+        class="form-control"
+        @bind="push_start_date_s" />
+        <label for="address">訊息推播啟始時間(迄)</label>
+        <input id="address"
+        type="text"
+        class="form-control"
+        @bind="push_start_date_e" />
+        <button class="btn btn-outline-primary"
+        @onclick="FilterSearchResults">
+            查詢
+        </button>
+        <button class="btn btn-outline-secondary"
+        @onclick="ClearSearchFilter">
+            清除
+        </button>
+        @if(create)
+        {
+        <button class="btn btn-outline-secondary"
+                @onclick="AddBusinessMessagePushList">
+            新增
+        </button>
+        }
+    </div>
+}
+else
+{
+    if(create)
+    {
+        <div class="filters">
+            <button class="btn btn-outline-secondary"
+            @onclick="AddBusinessMessagePushList">
+                新增
+            </button>
+        </div>
+    }
+}
+@if(read) {
+    <Grid TItem="DataBusinessMessagePushList"
+    Class="table table-hover table-bordered table-striped"
+    DataProvider="BusinessMessagePushListDataProvider"
+    AllowPaging="true"
+    Responsive="true"
+    PageSize=2
+    @ref="GridDBL">
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="廣告/行銷id" PropertyName="backend_user_id" SortString="backend_user_id" SortKeySelector="item => item.backend_user_id" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center" Class="d-none">
+            @context.backend_user_id
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="廣告/行銷id" PropertyName="business_message_push_id" SortString="business_message_push_id" SortKeySelector="item => item.business_message_push_id" FilterTextboxWidth="80" Class="d-none">
+            @context.business_message_push_id
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="商家名稱" PropertyName="business_name" SortString="business_name" SortKeySelector="item => item.business_name" FilterTextboxWidth="80">
+            @context.business_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="訊息標題" PropertyName="message_title" SortString="message_title" SortKeySelector="item => item.message_title" FilterTextboxWidth="80">
+            <a href="@context.message_url" target="_blank">@context.message_title</a>
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="訊息內容" PropertyName="message_content" SortString="message_content" SortKeySelector="item => item.message_content" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+            @context.message_content
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="活動圖示" PropertyName="message_image" SortString="message_image" SortKeySelector="item => item.message_image" FilterTextboxWidth="80">
+            @* <img src="@context.message_image" /> *@
+            <img src=@string.Format("{0}{1}","http://10.10.10.207:8082/",context.message_image) width="50" height="50" />
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="活動啟始時間" PropertyName="push_start_date" SortString="push_start_date" SortKeySelector="item => item.push_start_date" FilterTextboxWidth="80">
+            @context.push_start_date
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="活動結束時間" PropertyName="push_end_date" SortString="push_end_date" SortKeySelector="item => item.push_end_date" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+            @context.push_end_date
+        </GridColumn>   
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="創建日期" PropertyName="created_date" SortString="created_date" SortKeySelector="item => item.created_date" FilterTextboxWidth="100">
+            @context.created_date
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="更新日期" PropertyName="updated_date" SortString="updated_date" SortKeySelector="item => item.updated_date" FilterTextboxWidth="120">
+            @context.updated_date
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList" HeaderText="更新者" PropertyName="backend_user_name" SortString="backend_user_name" SortKeySelector="item => item.backend_user_name" FilterTextboxWidth="150">
+            @context.backend_user_name
+        </GridColumn>
+        <GridColumn TItem="DataBusinessMessagePushList">
+            @if (update)
+            {
+                <Tooltip Title="Edit" role="button">
+                    <Icon Name="IconName.PencilFill" Size=" IconSize.x5" @onclick="@(() => Update(@context.business_id, @context.business_message_push_id))" title="" />
+                </Tooltip>
+            }
+            @if (delete)
+            {
+                <Tooltip Title="Delete" role="button">
+                    <Icon Name="IconName.ClipboardXFill" Size=" IconSize.x5" @onclick="@(() => Delete(@context.business_id, @context.business_message_push_id))" />
+                </Tooltip>
+            }
+        </GridColumn>
+    </Grid>
+}
+@if(delete)
+{
+    <Modal @ref="modal1"
+    title="刪除資料">
+
+        <BodyTemplate>
+            確定刪除這筆資料？
+        </BodyTemplate>
+
+        <FooterTemplate>
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">取消</Button>
+            <Button Color="ButtonColor.Primary" @onclick="OnDeleteModalClick">確定</Button>
+        </FooterTemplate>
+
+    </Modal>
+    <Modal @ref="modal2" Title="System Message">
+        <BodyTemplate>
+            code:@req.code<br />
+            message:@req.message
+        </BodyTemplate>
+    </Modal>
+}
+@code {
+    private int business_id = 0;
+    private string message_title = "";
+    private string push_start_date_s = "";
+    private string push_start_date_e = "";
+    private int del_business_id = 0;
+    private int del_business_message_push_id = 0;
+    private string errorMessage = "";
+    private IQueryable<DataBusinessMessagePushList> dataBusinessMessagePushList;
+    private SignalRChat.Client.Model.BusinessMessagePushList backendUserList;
+    private Grid<DataBusinessMessagePushList> GridDBL;
+    private Modal modal1 = default!;
+    private Modal modal2 = default!;
+    private ResponseStanderd req = default!;
+    private BackendUserRightList BURL;
+    // 權限控管
+    private bool create = false;
+    private bool read = false;
+    private bool update = false;
+    private bool delete = false;
+
+    private void Update(int business_id, int business_message_push_id)
+    {
+        NavManager.NavigateTo($"/BusinessMessagePushListUpdate/{business_id}/{business_message_push_id}");
+    }    
+    private async Task OnHideModalClick()
+    {
+        await modal1.HideAsync();
+    }
+    private async Task OnDeleteModalClick()
+    {
+        await modal1.HideAsync();
+        req = await ObjectBusinessMessagePushService.DeleteBusinessMessagePushList(del_business_id, del_business_message_push_id);
+        if (req.code == "0")
+        {
+            await modal2.ShowAsync();
+            await GridDBL.RefreshDataAsync(new CancellationToken());
+            await GridDBL.ResetPageNumber();
+        }
+        else
+        {
+            await modal2.ShowAsync();
+        }
+    }
+    private async void Delete(int business_id, int business_message_push_id)
+    {
+        del_business_id = business_id;
+        del_business_message_push_id = business_message_push_id;
+        await modal1.ShowAsync();
+    }
+
+    // protected override void OnInitialized() =>
+    //   CountPerPage = int.Parse(configuration.GetSection("CountPerPage").Value);
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"錯誤: {ex.Message}";
+            }
+        }
+    }
+    private async Task InitializeAsync()
+    {
+        BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+        if (BURL.dataRight.Where(e => e.backend_right_id == 26).Count() > 0)
+        {
+            create = true;
+        }
+        else
+        {
+            create = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 27).Count() > 0)
+        {
+            update = true;
+        }
+        else
+        {
+            update = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 28).Count() > 0)
+        {
+            read = true;
+        }
+        else
+        {
+            read = false;
+        }
+        if (BURL.dataRight.Where(e => e.backend_right_id == 29).Count() > 0)
+        {
+            delete = true;
+        }
+        else
+        {
+            delete = false;
+        }
+        business_id = 0;
+        message_title = "";
+        push_start_date_s = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+        push_start_date_e = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+        StateHasChanged();
+
+    }
+    private async Task<GridDataProviderResult<DataBusinessMessagePushList>> BusinessMessagePushListDataProvider(GridDataProviderRequest<DataBusinessMessagePushList> request)
+    {
+        SignalRChat.Client.Model.BusinessMessagePushList bList = await ObjectBusinessMessagePushService.GetBusinessMessagePushList(business_id, message_title, push_start_date_s, push_start_date_e, int.Parse(configuration["CountPerPage"]), request.PageNumber);
+        if (bList.code == "0")
+        {
+            backendUserList = bList;
+            return await Task.FromResult(new GridDataProviderResult<DataBusinessMessagePushList> { Data = backendUserList.data, TotalCount = backendUserList.dataMessagePushCount });
+        }
+        else
+        {
+            Console.WriteLine($"錯誤代碼：{backendUserList.code},錯誤訊息：{backendUserList.message}");
+        }
+        return await Task.FromResult(new GridDataProviderResult<DataBusinessMessagePushList> { Data = new List<DataBusinessMessagePushList>(), TotalCount = 0 });
+    }
+    private async void FilterSearchResults()
+    {
+        await GridDBL.RefreshDataAsync(new CancellationToken());
+        await GridDBL.ResetPageNumber();
+    }
+
+    private void ClearSearchFilter()
+    {
+        business_id = 0;
+        message_title = "";
+        push_start_date_s = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+        push_start_date_e = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+    }
+    private void AddBusinessMessagePushList()
+    {
+        NavManager.NavigateTo("/BusinessMessagePushListCreate");
+    }
+}

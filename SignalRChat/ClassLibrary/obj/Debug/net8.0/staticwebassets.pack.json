@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ClassLibrary.7z9dagaqur.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ClassLibrary.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ClassLibrary.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ClassLibrary.props",
+      "PackagePath": "build\\ClassLibrary.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ClassLibrary.props",
+      "PackagePath": "buildMultiTargeting\\ClassLibrary.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ClassLibrary.props",
+      "PackagePath": "buildTransitive\\ClassLibrary.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

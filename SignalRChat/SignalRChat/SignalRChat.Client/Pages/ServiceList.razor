@@ -1,0 +1,88 @@
+﻿@page "/servicelist"
+@using SignalRChat.Client.Service
+@using SignalRChat.Client.Model
+@rendermode InteractiveWebAssembly
+@inject BusinessService businessService
+@inject NavigationManager Navigator
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<PageTitle>Service List</PageTitle>
+<div>
+    @if (!success)
+    {
+        <p>Loading...</p>
+    }
+    else if (chatRoomData != null && chatRoomData.Length > 0)
+    {
+        @foreach (var chatRoom in chatRoomData)
+        {
+            <button @onclick="() => NavigateToChatRoom(chatRoom.business_service_name, chatRoom.user_uuid, chatRoom.business_id.ToString())">@chatRoom.business_name -- @chatRoom.business_service_name [@chatRoom.user_name]: (Unread: @chatRoom.business_service_talks_is_not_read_count)</button> <br />
+        }
+    }
+    else
+    {
+        <p>沒有新訊息.</p>
+    }
+</div>
+
+@code {
+    private BusinessService.BusinessServiceList chatRoomList;
+    private BusinessService.BusinessServiceData[] chatRoomData;
+    private bool success;
+    private string errorMessage;
+
+    private int count = 0;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Console.WriteLine("First render: " + firstRender);
+            try
+            {
+                await Initialize();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"錯誤: {ex.Message}";
+            }
+        }
+    }
+
+    private async Task Initialize()
+    {
+        try
+        {
+            var BURL = await sessionStorage.GetItemAsync<BackendUserRightList>("backendUserRightList");
+            if (BURL != null)
+            {
+                chatRoomList = await businessService.GetBusinessServiceChatRoomList(BURL.backend_user_id);
+                if (chatRoomList != null && chatRoomList.data != null)
+                {
+                    chatRoomData = chatRoomList.data;
+                    Console.WriteLine("Success");
+                }
+                else
+                {
+                    chatRoomData = new BusinessService.BusinessServiceData[0];
+                    Console.WriteLine("Failed");
+                }
+            }
+
+            success = true;
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"错误: {ex.Message}";
+            Console.WriteLine($"异常: {ex.Message}");
+        }
+    }
+
+    private void NavigateToChatRoom(string serviceName, string uuid, string businessId)
+    {
+        string groupName = $"{serviceName}^{uuid}";
+        //Navigator.NavigateTo($"/chat?groupName={groupName}&userName={serviceName}&uuid={uuid}&businessId={businessId}");
+        Navigator.NavigateTo($"/chat/{groupName}/{serviceName}/{uuid}/{businessId}");
+    }
+}
