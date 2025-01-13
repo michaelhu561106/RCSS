@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj": {}
+    "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj": {}
   },
   "projects": {
-    "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj": {
+    "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
+        "projectUniqueName": "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
         "projectName": "ClassLibrary",
-        "projectPath": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
+        "projectPath": "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\",
+        "outputPath": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

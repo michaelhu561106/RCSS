@@ -9,37 +9,37 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ClassLibrary
 build_property.RootNamespace = ClassLibrary
-build_property.ProjectDir = C:\RCSS_Backup\SignalRChat\ClassLibrary\
+build_property.ProjectDir = C:\RCSS\SignalRChat\ClassLibrary\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\RCSS_Backup\SignalRChat\ClassLibrary
+build_property.MSBuildProjectDirectory = C:\RCSS\SignalRChat\ClassLibrary
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/RCSS_Backup/SignalRChat/ClassLibrary/Components/App.razor]
+[C:/RCSS/SignalRChat/ClassLibrary/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/RCSS_Backup/SignalRChat/ClassLibrary/Components/Pages/Error.razor]
+[C:/RCSS/SignalRChat/ClassLibrary/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/RCSS_Backup/SignalRChat/ClassLibrary/Components/Pages/Home.razor]
+[C:/RCSS/SignalRChat/ClassLibrary/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/RCSS_Backup/SignalRChat/ClassLibrary/Components/Routes.razor]
+[C:/RCSS/SignalRChat/ClassLibrary/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/RCSS_Backup/SignalRChat/ClassLibrary/Components/_Imports.razor]
+[C:/RCSS/SignalRChat/ClassLibrary/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/RCSS_Backup/SignalRChat/ClassLibrary/Components/Layout/MainLayout.razor]
+[C:/RCSS/SignalRChat/ClassLibrary/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-qzap527pr6

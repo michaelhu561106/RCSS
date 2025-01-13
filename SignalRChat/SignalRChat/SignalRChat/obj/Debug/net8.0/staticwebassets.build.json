@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "vgsS4c/9EOuW1nC5sXTYzHuTN27y34Rgax7SBzU1ecE=",
+  "Hash": "LEBQIT9haf53WztopSfuDFgfyObpQpHIIEJ5WzfsPh0=",
   "Source": "SignalRChat",
   "BasePath": "_content/SignalRChat",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
+      "Identity": "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
       "Version": 2,
       "Source": "ClassLibrary",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -18,7 +18,7 @@
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
     },
     {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj",
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj",
       "Version": 2,
       "Source": "SignalRChat.Client",
       "GetPublishAssetsTargets": "ComputeFilesToPublish;GetCurrentProjectPublishStaticWebAssetItems",
@@ -47,12 +47,138 @@
     {
       "Name": "SignalRChat\\wwwroot",
       "Source": "SignalRChat",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
       "BasePath": "_content/SignalRChat",
       "Pattern": "**"
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css",
+      "SourceId": "SignalRChat",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/SignalRChat",
+      "RelativePath": "SignalRChat#[.{fingerprint}]?.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "Fingerprint": "bndsksj71a",
+      "Integrity": "6VeWAyBtgHSb3kfWGg0rtoxk4cEeA1q0hYBKWMYdAmo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css"
+    },
+    {
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
+      "SourceId": "SignalRChat",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/SignalRChat",
+      "RelativePath": "SignalRChat#[.{fingerprint}]!.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "Fingerprint": "ghiztiombw",
+      "Integrity": "rPIRTiFFYOTfS64KoAhztOeCEh1b+7bVjY3PiP4QCCw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
+      "SourceId": "SignalRChat",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
+      "BasePath": "_content/SignalRChat",
+      "RelativePath": "app#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "da95v2qkru",
+      "Integrity": "u9qEka1auR7E3rd3/8/j8hkQdSOYj9bRJ4nYiFDR1sE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\app.css"
+    },
+    {
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "SourceId": "SignalRChat",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
+      "BasePath": "_content/SignalRChat",
+      "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6gzpyzhau4",
+      "Integrity": "SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "SourceId": "SignalRChat",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
+      "BasePath": "_content/SignalRChat",
+      "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8inm30yfxf",
+      "Integrity": "gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Identity": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
+      "SourceId": "SignalRChat",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
+      "BasePath": "_content/SignalRChat",
+      "RelativePath": "favicon#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ifv42okdf2",
+      "Integrity": "4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
     {
       "Identity": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
       "SourceId": "ClassLibrary",
@@ -9859,132 +9985,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\wwwroot\\appsettings.json"
-    },
-    {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css",
-      "SourceId": "SignalRChat",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/SignalRChat",
-      "RelativePath": "SignalRChat#[.{fingerprint}]?.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "bndsksj71a",
-      "Integrity": "6VeWAyBtgHSb3kfWGg0rtoxk4cEeA1q0hYBKWMYdAmo=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css"
-    },
-    {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
-      "SourceId": "SignalRChat",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/SignalRChat",
-      "RelativePath": "SignalRChat#[.{fingerprint}]!.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "ghiztiombw",
-      "Integrity": "rPIRTiFFYOTfS64KoAhztOeCEh1b+7bVjY3PiP4QCCw=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css"
-    },
-    {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
-      "SourceId": "SignalRChat",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
-      "BasePath": "_content/SignalRChat",
-      "RelativePath": "app#[.{fingerprint}]?.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "da95v2qkru",
-      "Integrity": "u9qEka1auR7E3rd3/8/j8hkQdSOYj9bRJ4nYiFDR1sE=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\app.css"
-    },
-    {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
-      "SourceId": "SignalRChat",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
-      "BasePath": "_content/SignalRChat",
-      "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint}]?.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "6gzpyzhau4",
-      "Integrity": "SiIVMGgRhdXjKSTIddX7mh9IbOXVcwQWc7/p4nS6D/0=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
-    },
-    {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
-      "SourceId": "SignalRChat",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
-      "BasePath": "_content/SignalRChat",
-      "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "8inm30yfxf",
-      "Integrity": "gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
-    },
-    {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
-      "SourceId": "SignalRChat",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\",
-      "BasePath": "_content/SignalRChat",
-      "RelativePath": "favicon#[.{fingerprint}]?.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "ifv42okdf2",
-      "Integrity": "4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
       "Identity": "C:\\Users\\user\\.nuget\\packages\\blazor.bootstrap\\3.1.1\\staticwebassets\\blazor.bootstrap.ai.js",
@@ -42497,7 +42497,7 @@
     },
     {
       "Route": "app.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42534,7 +42534,7 @@
     },
     {
       "Route": "app.da95v2qkru.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42743,7 +42743,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.6gzpyzhau4.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42788,7 +42788,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42825,7 +42825,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42870,7 +42870,7 @@
     },
     {
       "Route": "bootstrap/bootstrap.min.css.map",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42907,7 +42907,7 @@
     },
     {
       "Route": "favicon.ifv42okdf2.png",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42952,7 +42952,7 @@
     },
     {
       "Route": "favicon.png",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -42989,7 +42989,7 @@
     },
     {
       "Route": "SignalRChat.bndsksj71a.styles.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -43038,7 +43038,7 @@
     },
     {
       "Route": "SignalRChat.bundle.scp.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -43157,7 +43157,7 @@
     },
     {
       "Route": "SignalRChat.ghiztiombw.bundle.scp.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -43202,7 +43202,7 @@
     },
     {
       "Route": "SignalRChat.styles.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SignalRChat.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {

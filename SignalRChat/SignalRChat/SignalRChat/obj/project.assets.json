@@ -2290,11 +2290,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\SignalRChat.csproj",
+      "projectUniqueName": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\SignalRChat.csproj",
       "projectName": "SignalRChat",
-      "projectPath": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\SignalRChat.csproj",
+      "projectPath": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\SignalRChat.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\",
+      "outputPath": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2316,11 +2316,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj": {
-              "projectPath": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj"
+            "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj": {
+              "projectPath": "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj"
             },
-            "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj": {
-              "projectPath": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj"
+            "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj": {
+              "projectPath": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj"
             }
           }
         }

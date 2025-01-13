@@ -1,23 +1,23 @@
 {
   "Files": [
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.bundle.scp.css",
       "PackagePath": "staticwebassets\\SignalRChat.ghiztiombw.bundle.scp.css"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {

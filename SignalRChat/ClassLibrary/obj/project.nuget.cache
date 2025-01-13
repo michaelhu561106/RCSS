@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "q6SxEs8yd24=",
+  "dgSpecHash": "ZDHzGh5HH5U=",
   "success": true,
-  "projectFilePath": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
+  "projectFilePath": "C:\\RCSS\\SignalRChat\\ClassLibrary\\ClassLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\google.apis\\1.68.0\\google.apis.1.68.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\google.apis.auth\\1.68.0\\google.apis.auth.1.68.0.nupkg.sha512",

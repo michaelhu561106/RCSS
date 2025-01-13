@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PbJr1xRtlg8=",
+  "dgSpecHash": "LMOOzylIGC4=",
   "success": true,
-  "projectFilePath": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj",
+  "projectFilePath": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\SignalRChat.Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\accelist.fluentvalidation.blazor\\4.0.0\\accelist.fluentvalidation.blazor.4.0.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\blazor.bootstrap\\3.1.1\\blazor.bootstrap.3.1.1.nupkg.sha512",
