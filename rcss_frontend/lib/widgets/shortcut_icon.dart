@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../pages/chat_page.dart';
 import '../pages/index_page.dart';
 import '../service_implementation/index_service.dart';
+import 'package:rcss_frontend/service_implementation/friend_service.dart';
 
 class ShortcutIcon extends StatefulWidget {
   final String login_uuid;
@@ -39,6 +40,7 @@ class ShortcutIcon extends StatefulWidget {
 
 class _ShortcutIconState extends State<ShortcutIcon> {
   final IndexService _indexService = IndexService();
+  final FriendService _friendService = FriendService();
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +127,7 @@ class _ShortcutIconState extends State<ShortcutIcon> {
         });
   }
 
-  void _clickNavigate(BuildContext context) {
+  void _clickNavigate(BuildContext context) async {
     switch (widget.type) {
       case 1:
         int businessId = widget.shortcutUrl['business_id'];
@@ -153,13 +155,19 @@ class _ShortcutIconState extends State<ShortcutIcon> {
         String friendUuid = widget.shortcutUrl['friend_uuid'];
         String friendUserName = widget.shortcutUrl['friend_user_name'];
         String senderUuid = widget.shortcutUrl['sender_uuid'];
+        Map<String, dynamic> userAndFriendName =
+            await _friendService.getUserName(senderUuid, friendUuid,widget.login_uuid);
+        String uname = widget.login_uuid == senderUuid ? userAndFriendName['user_name'] : userAndFriendName['friend_user_name'];
+        String fname = widget.login_uuid == senderUuid ? userAndFriendName['friend_user_name'] : userAndFriendName['user_name'];
+        //print(uname);
+        //print(fname);
         Get.to(FriendChatPage(
             login_uuid: widget.login_uuid,
             groupName: '${widget.uuid}^friendUuid',
-            uuid: widget.uuid,
+            uuid: senderUuid,
             friendUuid: friendUuid,
-            userName: widget.userName,
-            friendUserName: friendUserName,
+            userName: uname,
+            friendUserName: fname,
             senderUuid: senderUuid));
         break;
       case 5:

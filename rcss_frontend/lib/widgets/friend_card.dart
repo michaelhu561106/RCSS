@@ -99,12 +99,13 @@ class FriendCard extends Card {
               TextButton(
                 onPressed: () => {
                   _indexService.createIndexPageShortcut(
-                      uuid,
+                      login_uuid,
                       3,
                       _titleController.text,
-                      {'friend_uuid': friendUuid,
+                      {'friend_uuid': this.friendUuid,
                        'friend_user_name': fname,
-                       'sender_uuid': countUuid,},
+                       //'sender_uuid': countUuid,
+                       'sender_uuid': this.uuid},
                       DateTime.now().toUtc().toString()),
                   Navigator.pop(context)
                 },

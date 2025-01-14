@@ -129,4 +129,29 @@ class FriendService {
           '錯誤：Error code: ${responseBody['code']}, Message: ${responseBody['message']}');
     }
   }
+  Future getUserName(
+      String uuid, String friend_uuid, String count_uuid) async {
+    final uri = Uri.parse('http://10.10.10.207:3000/api/username');
+
+    final requestBody = {
+      'uuid': uuid,
+      'friend_uuid': friend_uuid,
+      'count_uuid': count_uuid,
+    };
+
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: json.encode(requestBody),
+    );
+
+    Map<String, dynamic> responseBody = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      return responseBody;
+    } else {
+      throw Exception(
+          '錯誤：Error code: ${responseBody['code']}, Message: ${responseBody['message']}');
+    }
+  }
 }
