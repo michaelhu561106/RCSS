@@ -38,7 +38,7 @@ class FriendCard extends Card {
             groupName: '${this.uuid}^${this.friendUuid}',
             uuid: this.uuid,
             friendUuid: this.friendUuid,
-            userName: this.userName,
+            userName: uname,
             friendUserName: fname,
             senderUuid: this.countUuid,
           ),

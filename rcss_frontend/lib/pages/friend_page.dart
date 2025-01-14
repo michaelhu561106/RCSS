@@ -114,7 +114,6 @@ class _FriendPageState extends State<FriendPage> {
   void _fetchFriendsList(String uuid) async {
     Map<String, dynamic> friendsData =
         await _friendService.fetchFriendsList(uuid);
-
     setState(() {
       for (Map<String, dynamic> friend in friendsData['data']) {
         _friendCards.add(
@@ -122,7 +121,8 @@ class _FriendPageState extends State<FriendPage> {
             login_uuid:widget.uuid,
             uuid: friend['uuid'],
             friendUuid: friend['friend_uuid'],
-            userName: widget.username,
+            //userName: widget.username,
+            userName: friend['user_name'],
             friendUserName: friend['friend_user_name'],
             countUuid: friend['count_uuid'],
             count: friend['count'].toString(),

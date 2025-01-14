@@ -250,6 +250,15 @@ class _FriendChatPageState extends State<FriendChatPage> {
           _messages.add(
               '${widget.friendUserName}: ${friendTalkHistory[i]['talk_content']} --- [${timestamp}]');
         }
+        /*if (friendTalkHistory[i]['sender_uuid'] == widget.uuid &&
+            friendTalkHistory[i]['reader_uuid'] == widget.uuid) {
+          _messages.add(
+              '${widget.userName}: ${friendTalkHistory[i]['talk_content']} --- [${timestamp}]');
+        } else if (friendTalkHistory[i]['sender_uuid'] == widget.friendUuid &&
+            friendTalkHistory[i]['reader_uuid'] == widget.friendUuid) {
+          _messages.add(
+              '${widget.friendUserName}: ${friendTalkHistory[i]['talk_content']} --- [${timestamp}]');
+        }*/
       }
     });
   }
