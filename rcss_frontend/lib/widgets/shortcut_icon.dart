@@ -166,6 +166,7 @@ class _ShortcutIconState extends State<ShortcutIcon> {
             groupName: '${widget.uuid}^friendUuid',
             uuid: senderUuid,
             friendUuid: friendUuid,
+            loginUserName: widget.userName,
             userName: uname,
             friendUserName: fname,
             senderUuid: senderUuid));
