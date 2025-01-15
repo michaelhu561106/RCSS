@@ -15,7 +15,7 @@
     <div class="filters">
         <label for="business_id">商家id</label>
         <input id="business_id"
-        type="number"
+        type="text"
         class="form-control"
         @bind="business_id" />
         <label for="message_title">訊息標題</label>
@@ -108,13 +108,13 @@ else
             @if (update)
             {
                 <Tooltip Title="Edit" role="button">
-                    <Icon Name="IconName.PencilFill" Size=" IconSize.x5" @onclick="@(() => Update(@context.business_id, @context.business_message_push_id))" title="" />
+                    <Icon Name="IconName.PencilFill" Size=" IconSize.x5" @onclick="@(() => Update(@context.business_id.ToString(), @context.business_message_push_id))" title="" />
                 </Tooltip>
             }
             @if (delete)
             {
                 <Tooltip Title="Delete" role="button">
-                    <Icon Name="IconName.ClipboardXFill" Size=" IconSize.x5" @onclick="@(() => Delete(@context.business_id, @context.business_message_push_id))" />
+                    <Icon Name="IconName.ClipboardXFill" Size=" IconSize.x5" @onclick="@(() => Delete(@context.business_id.ToString(), @context.business_message_push_id))" />
                 </Tooltip>
             }
         </GridColumn>
@@ -143,7 +143,7 @@ else
     </Modal>
 }
 @code {
-    private int business_id = 0;
+    private string business_id = "";
     private string message_title = "";
     private string push_start_date_s = "";
     private string push_start_date_e = "";
@@ -163,7 +163,7 @@ else
     private bool update = false;
     private bool delete = false;
 
-    private void Update(int business_id, int business_message_push_id)
+    private void Update(string business_id, int business_message_push_id)
     {
         NavManager.NavigateTo($"/BusinessMessagePushListUpdate/{business_id}/{business_message_push_id}");
     }    
@@ -186,9 +186,9 @@ else
             await modal2.ShowAsync();
         }
     }
-    private async void Delete(int business_id, int business_message_push_id)
+    private async void Delete(string business_id, int business_message_push_id)
     {
-        del_business_id = business_id;
+        del_business_id = int.Parse(business_id);
         del_business_message_push_id = business_message_push_id;
         await modal1.ShowAsync();
     }
@@ -244,7 +244,7 @@ else
         {
             delete = false;
         }
-        business_id = 0;
+        business_id = "";
         message_title = "";
         push_start_date_s = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
         push_start_date_e = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
@@ -253,7 +253,12 @@ else
     }
     private async Task<GridDataProviderResult<DataBusinessMessagePushList>> BusinessMessagePushListDataProvider(GridDataProviderRequest<DataBusinessMessagePushList> request)
     {
-        SignalRChat.Client.Model.BusinessMessagePushList bList = await ObjectBusinessMessagePushService.GetBusinessMessagePushList(business_id, message_title, push_start_date_s, push_start_date_e, int.Parse(configuration["CountPerPage"]), request.PageNumber);
+        int businessId = -1;
+        if (!String.IsNullOrEmpty(business_id))
+        {
+            businessId = int.Parse(business_id);
+        }
+        SignalRChat.Client.Model.BusinessMessagePushList bList = await ObjectBusinessMessagePushService.GetBusinessMessagePushList(businessId, message_title, push_start_date_s, push_start_date_e, int.Parse(configuration["CountPerPage"]), request.PageNumber);
         if (bList.code == "0")
         {
             backendUserList = bList;
@@ -273,7 +278,7 @@ else
 
     private void ClearSearchFilter()
     {
-        business_id = 0;
+        business_id = "";
         message_title = "";
         push_start_date_s = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
         push_start_date_e = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");

@@ -9,6 +9,7 @@ class FriendChatPage extends StatefulWidget {
   final String groupName;
   final String uuid;
   final String friendUuid;
+  final String loginUserName;
   final String userName;
   final String friendUserName;
   final String senderUuid;
@@ -19,6 +20,7 @@ class FriendChatPage extends StatefulWidget {
     required this.groupName,
     required this.uuid,
     required this.friendUuid,
+    required this.loginUserName,
     required this.userName,
     required this.friendUserName,
     required this.senderUuid,
@@ -226,13 +228,13 @@ class _FriendChatPageState extends State<FriendChatPage> {
         if (duplicatedContents.length == 1) {
           // Reach the last element.
           if (i == friendTalkHistory.length - 1 && friendTalkHistory[i]['sender_uuid'] == widget.login_uuid) {
-            _messages.add(_seperationLine);
+            //_messages.add(_seperationLine);
             isSeperationLineAdded = true;
           } else if (duplicatedContents[0] ==
               friendTalkHistory[i]['talk_content']) {
             duplicatedContents.add(friendTalkHistory[i]['talk_content']);
           } else if (!isSeperationLineAdded) {
-            _messages.add(_seperationLine);
+            //_messages.add(_seperationLine);
             isSeperationLineAdded = true;
           }
         }
@@ -289,7 +291,8 @@ class _FriendChatPageState extends State<FriendChatPage> {
     if (_hubConnection.state == HubConnectionState.Connected) {
       await _hubConnection.invoke('SendMessageToGroup', args: [
         widget.groupName,
-        widget.userName,
+        widget.loginUserName,
+        //widget.userName,
         _messageController.text,
         widget.uuid,
         widget.friendUuid,

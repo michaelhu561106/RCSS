@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kqnzuV1GJWa7GY9Gylm2QChxuHaZnBlygaCM6muwIEM=",
+  "Hash": "82b9tjf1d1Y76uhT1CaAtoLTduZGeNJ9APLZSgES7PU=",
   "Source": "ClassLibrary",
   "BasePath": "_content/ClassLibrary",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "ClassLibrary\\wwwroot",
       "Source": "ClassLibrary",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\ClassLibrary\\wwwroot\\",
       "BasePath": "_content/ClassLibrary",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css",
+      "Identity": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css",
       "SourceId": "ClassLibrary",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/ClassLibrary",
       "RelativePath": "ClassLibrary#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "wx2XS5ljFCRrVjEIYfR+BwC43iAOPdW0NEqvjec8NW4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css"
+      "OriginalItemSpec": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css"
     },
     {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
+      "Identity": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
       "SourceId": "ClassLibrary",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/ClassLibrary",
       "RelativePath": "ClassLibrary#[.{fingerprint}]!.bundle.scp.css",
       "AssetKind": "All",
@@ -56,13 +56,13 @@
       "Integrity": "wx2XS5ljFCRrVjEIYfR+BwC43iAOPdW0NEqvjec8NW4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css"
+      "OriginalItemSpec": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css"
     },
     {
-      "Identity": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
+      "Identity": "C:\\RCSS\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
       "SourceId": "ClassLibrary",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\",
+      "ContentRoot": "C:\\RCSS\\SignalRChat\\ClassLibrary\\wwwroot\\",
       "BasePath": "_content/ClassLibrary",
       "RelativePath": "app#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -83,7 +83,7 @@
   "Endpoints": [
     {
       "Route": "app.9tsjre4pz5.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -128,7 +128,7 @@
     },
     {
       "Route": "app.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -165,7 +165,7 @@
     },
     {
       "Route": "ClassLibrary.7z9dagaqur.bundle.scp.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -186,7 +186,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 10 Jan 2025 02:27:16 GMT"
+          "Value": "Wed, 15 Jan 2025 03:57:55 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -210,7 +210,7 @@
     },
     {
       "Route": "ClassLibrary.7z9dagaqur.styles.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -231,7 +231,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 10 Jan 2025 02:27:16 GMT"
+          "Value": "Wed, 15 Jan 2025 03:57:55 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -255,7 +255,7 @@
     },
     {
       "Route": "ClassLibrary.bundle.scp.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -276,7 +276,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 10 Jan 2025 02:27:16 GMT"
+          "Value": "Wed, 15 Jan 2025 03:57:55 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -292,7 +292,7 @@
     },
     {
       "Route": "ClassLibrary.styles.css",
-      "AssetFile": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css",
+      "AssetFile": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClassLibrary.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -313,7 +313,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 10 Jan 2025 02:27:16 GMT"
+          "Value": "Wed, 15 Jan 2025 03:57:55 GMT"
         },
         {
           "Name": "Cache-Control",

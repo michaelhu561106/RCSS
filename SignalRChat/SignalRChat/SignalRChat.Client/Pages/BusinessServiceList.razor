@@ -15,7 +15,7 @@
     <div class="filters">
         <label for="business_type_id">商家id</label>
         <input id="business_id"
-        type="number"
+        type="text"
         class="form-control"
         @bind="business_id" />
         <label for="business_service_name">商家客服聊天室名稱</label>
@@ -33,10 +33,10 @@
         </button>
         @if (create)
         {
-        <button class="btn btn-outline-secondary"
-                @onclick="AddBusinessServiceList">
-            新增
-        </button>
+            <button class="btn btn-outline-secondary"
+            @onclick="AddBusinessServiceList">
+                新增
+            </button>
         }
     </div>
 }
@@ -46,7 +46,7 @@ else
     {
         <div class="filters">
             <button class="btn btn-outline-secondary"
-                    @onclick="AddBusinessServiceList">
+            @onclick="AddBusinessServiceList">
                 新增
             </button>
         </div>
@@ -78,9 +78,9 @@ else
         </GridColumn>    
         <GridColumn TItem="DataBusinessServiceList">
             @* <Icon Name="IconName.PencilFill" Size=" IconSize.x5" @onclick="@(() => Update(@context.business_id, @context.business_service_name))" /> *@
-             @if(delete) {
+            @if(delete) {
                 <Icon Name="IconName.ClipboardXFill" Size=" IconSize.x5" @onclick="@(() => Delete(@context.business_id, @context.business_service_name))" />
-             }
+            }
         </GridColumn>
     </Grid>
 }
@@ -108,7 +108,7 @@ else
 }
 @code {
     private DataBusinessServiceList? selected;
-    private int business_id = 0;
+    private string business_id;
     private string business_service_name = "";
     private int del_business_id = 0;
     private string del_business_service_name = "";
@@ -127,7 +127,7 @@ else
     private bool read = false;
     private bool update = false;
     private bool delete = false;
-    
+
     private async Task OnHideModalClick()
     {
         await modal1.HideAsync();
@@ -210,13 +210,18 @@ else
         {
             delete = false;
         }
-        business_id = 0;
+        business_id = "";
         business_service_name = "";
         StateHasChanged();
     }
     private async Task<GridDataProviderResult<DataBusinessServiceList>> BusinessServiceListDataProvider(GridDataProviderRequest<DataBusinessServiceList> request)
     {
-        SignalRChat.Client.Model.BusinessServiceList bList = await ObjectBusinessServiceService.GetBusinessServiceList(business_service_name, business_id, int.Parse(configuration["CountPerPage"]), request.PageNumber);
+        int businessId = -1;
+        if(!String.IsNullOrEmpty(business_id))
+        {
+            businessId = int.Parse(business_id);
+        }
+        SignalRChat.Client.Model.BusinessServiceList bList = await ObjectBusinessServiceService.GetBusinessServiceList(business_service_name, businessId, int.Parse(configuration["CountPerPage"]), request.PageNumber);
         if (bList.code == "0")
         {
             businessServiceList = bList;
@@ -237,7 +242,7 @@ else
 
     private void ClearSearchFilter()
     {
-        business_id = 0;
+        business_id = "";
         business_service_name = "";
     }
     private void AddBusinessServiceList()

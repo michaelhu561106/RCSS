@@ -16,49 +16,49 @@
     <div class="filters">
         <label for="business_type_id">商家類型(id)</label>
         <input id="business_type_id"
-               type="number"
-               class="form-control"
-               @bind="business_type_id" />
+        type="text"
+        class="form-control"
+        @bind="business_type_id" />
         <label for="business_name">商家名稱</label>
         <input id="business_name"
-               type="text"
-               class="form-control"
-               @bind="business_name" />
+        type="text"
+        class="form-control"
+        @bind="business_name" />
         <label for="email">商家email</label>
         <input id="email"
-               type="text"
-               class="form-control"
-               @bind="email" />
+        type="text"
+        class="form-control"
+        @bind="email" />
         <label for="address">商家地址</label>
         <input id="address"
-               type="text"
-               class="form-control"
-               @bind="address" />
+        type="text"
+        class="form-control"
+        @bind="address" />
         <label for="phone">商家電話</label>
         <input id="phone"
-               type="text"
-               class="form-control"
-               @bind="phone" />
+        type="text"
+        class="form-control"
+        @bind="phone" />
         <button class="btn btn-outline-primary"
-                @onclick="FilterSearchResults">
+        @onclick="FilterSearchResults">
             查詢
         </button>
         <button class="btn btn-outline-secondary"
-                @onclick="ClearSearchFilter">
+        @onclick="ClearSearchFilter">
             清除
         </button>
         <button class="btn btn-outline-secondary" type="button"
-                @onclick="@CancelBackendBusinessServiceRightsAsync">
+        @onclick="@CancelBackendBusinessServiceRightsAsync">
             返回
         </button>
     </div>
     <Grid TItem="DataBusinessList"
-          Class="table table-hover table-bordered table-striped"
-          DataProvider="BusinessListDataProvider"
-          AllowPaging="true"
-          Responsive="true"
-          PageSize=2
-          @ref="GridDBL">
+    Class="table table-hover table-bordered table-striped"
+    DataProvider="BusinessListDataProvider"
+    AllowPaging="true"
+    Responsive="true"
+    PageSize=2
+    @ref="GridDBL">
 
         <GridColumn TItem="DataBusinessList" HeaderText="商家id" PropertyName="business_id" SortString="business_id" SortKeySelector="item => item.business_id" FilterTextboxWidth="50" Class="d-none" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
             @context.business_id
@@ -99,7 +99,7 @@
     private string phone = "";
     private string address = "";
     private string errorMessage = "";
-    private int business_id = 0;
+    private string business_id = "";
     private IQueryable<DataBusinessList> dataBusinessList;
     private SignalRChat.Client.Model.BusinessList businessList;
     private Grid<DataBusinessList> GridDBL;
@@ -118,7 +118,7 @@
     {
         NavManager.NavigateTo($"/BackendBusinessServiceRightsUpdate/{business_id}/{backend_user_id}/{backend_user_name}");
     }
- 
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
@@ -150,10 +150,16 @@
         email = "";
         phone = "";
         address = "";
+        business_id = "";
         StateHasChanged();
     }
     private async Task<GridDataProviderResult<DataBusinessList>> BusinessListDataProvider(GridDataProviderRequest<DataBusinessList> request)
     {
+        int businessId = -1;
+        if (!String.IsNullOrEmpty(business_id))
+        {
+            businessId = int.Parse(business_id);
+        }
         SignalRChat.Client.Model.BusinessList bList = await ObjectBusinessListService.GetBusinessList(address, phone, email, business_name, business_type_id, int.Parse(configuration["CountPerPage"]), request.PageNumber);
         if (bList.code == "0")
         {

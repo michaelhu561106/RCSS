@@ -1,19 +1,19 @@
 {
   "Files": [
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.Client.bundle.scp.css",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SignalRChat.Client.bundle.scp.css",
       "PackagePath": "staticwebassets\\SignalRChat.Client.ts3p1yf5kt.bundle.scp.css"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\wwwroot\\appsettings.Development.json",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\wwwroot\\appsettings.Development.json",
       "PackagePath": "staticwebassets\\appsettings.Development.json"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\SignalRChat\\SignalRChat.Client\\wwwroot\\appsettings.json",
+      "Id": "C:\\RCSS\\SignalRChat\\SignalRChat\\SignalRChat.Client\\wwwroot\\appsettings.json",
       "PackagePath": "staticwebassets\\appsettings.json"
     },
     {

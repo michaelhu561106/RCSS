@@ -114,7 +114,7 @@ class _ChatPageState extends State<ChatPage> {
         timestamp = timestamp.split('T')[1].substring(0, 8);
 
         if (!recentMessagesHistory['is_user_read'] && !isSeperationLineAdded) {
-          messages.add(seperationLine);
+          //messages.add(seperationLine);
           isSeperationLineAdded = true;
         }
 

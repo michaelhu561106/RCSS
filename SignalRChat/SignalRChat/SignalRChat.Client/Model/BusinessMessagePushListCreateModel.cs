@@ -10,7 +10,7 @@ namespace SignalRChat.Client.Model
         public int business_id { get; set; }
 
         [Required(ErrorMessage = "活動標題必填")]
-        [StringLength(28, MinimumLength = 4, ErrorMessage = "活動標題長度為4~28個文字")]
+        [StringLength(28, MinimumLength = 2, ErrorMessage = "活動標題長度為2~28個文字")]
         public string message_title { get; set; }
 
         [Required(ErrorMessage = "活動內容必填")]

@@ -1,6 +1,6 @@
 C:\RCSS\SignalRChat\ClassLibrary\obj\Debug\net8.0\staticwebassets.build.json
 C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\staticwebassets.build.json
-C:\RCSS_Backup\SignalRChat\ClassLibrary\obj\Debug\net8.0\staticwebassets.build.json
-C:\RCSS_Backup\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\staticwebassets.build.json
+C:\RCSS\SignalRChat\ClassLibrary\obj\Debug\net8.0\staticwebassets.build.json
+C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\staticwebassets.build.json
 C:\RCSS\SignalRChat\ClassLibrary\obj\Debug\net8.0\staticwebassets.build.json
 C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\staticwebassets.build.json

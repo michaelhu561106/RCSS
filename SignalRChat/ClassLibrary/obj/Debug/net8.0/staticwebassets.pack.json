@@ -1,11 +1,11 @@
 {
   "Files": [
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
+      "Id": "C:\\RCSS\\SignalRChat\\ClassLibrary\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ClassLibrary.bundle.scp.css",
       "PackagePath": "staticwebassets\\ClassLibrary.7z9dagaqur.bundle.scp.css"
     },
     {
-      "Id": "C:\\RCSS_Backup\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
+      "Id": "C:\\RCSS\\SignalRChat\\ClassLibrary\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {

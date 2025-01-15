@@ -12,7 +12,7 @@ namespace SignalRChat.Client.Service
         private readonly IConfiguration _configuration;
         public BusinessServiceService(HttpClient httpClient, IConfiguration configuration)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClient; 
             _configuration = configuration;
         }
         public async Task<SignalRChat.Client.Model.BusinessServiceList> GetBusinessServiceList(string business_service_name, int business_id, int count_per_page, int page)

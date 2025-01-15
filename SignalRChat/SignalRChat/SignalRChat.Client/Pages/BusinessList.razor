@@ -15,7 +15,7 @@
     <div class="filters">      
         <label for="business_type_id">商家類型(id)</label>
         <select @bind="business_type_id">
-            <option value="0">全部</option>
+            <option value="-1">全部</option>
             @if (dataBusinessType != null)
             {
                 @foreach (var dBT in dataBusinessType)
@@ -140,7 +140,7 @@ else
 }
 @code {
     private DataBusinessList? selected;
-    private int business_type_id = 0;
+    private int business_type_id = -1;
     private string business_name = "";
     private string email = "";
     private string phone = "";
@@ -241,7 +241,7 @@ else
             delete = false;
         }
         dataBusinessType = await ObjectBusinessListService.GetBusinessType();
-        business_type_id = 0;
+        business_type_id = -1;
         business_name = "";
         email = "";
         phone = "";
@@ -271,7 +271,7 @@ else
 
     private void ClearSearchFilter()
     {
-        business_type_id = 0;
+        business_type_id = -1;
         business_name = "";
         email = "";
         phone = "";

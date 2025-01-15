@@ -121,7 +121,7 @@ class _FriendPageState extends State<FriendPage> {
             login_uuid:widget.uuid,
             uuid: friend['uuid'],
             friendUuid: friend['friend_uuid'],
-            //userName: widget.username,
+            loginUserName: widget.username,
             userName: friend['user_name'],
             friendUserName: friend['friend_user_name'],
             countUuid: friend['count_uuid'],

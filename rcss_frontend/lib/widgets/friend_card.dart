@@ -8,6 +8,7 @@ class FriendCard extends Card {
   final String login_uuid;
   final String uuid;
   final String friendUuid;
+  final String loginUserName;
   final String userName;
   final String friendUserName;
   final String countUuid;
@@ -18,6 +19,7 @@ class FriendCard extends Card {
     required this.login_uuid,
     required this.uuid,
     required this.friendUuid,
+    required this.loginUserName,
     required this.userName,
     required this.friendUserName,
     required this.countUuid,
@@ -38,6 +40,7 @@ class FriendCard extends Card {
             groupName: '${this.uuid}^${this.friendUuid}',
             uuid: this.uuid,
             friendUuid: this.friendUuid,
+            loginUserName:this.loginUserName,
             userName: uname,
             friendUserName: fname,
             senderUuid: this.countUuid,
