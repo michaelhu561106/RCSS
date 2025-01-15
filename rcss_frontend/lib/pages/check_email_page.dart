@@ -24,7 +24,7 @@ class CheckEmailPage extends StatelessWidget {
         children: [
           TextFieldWidget(
               controller: emailController,
-              hintText: "Email",
+              hintText: "Email/Phone(含國碼)",
               obscureText: false),
           SizedBox(height: 32),
           GestureDetector(
