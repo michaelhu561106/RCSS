@@ -15,10 +15,16 @@
     <h3>客服聊室權限管理-選擇商家</h3>
     <div class="filters">
         <label for="business_type_id">商家類型(id)</label>
-        <input id="business_type_id"
-        type="text"
-        class="form-control"
-        @bind="business_type_id" />
+        <select @bind="business_type_id">
+            <option value="-1">全部</option>
+            @if (dataBusinessType != null)
+            {
+                @foreach (var dBT in dataBusinessType)
+                {
+                    <option value="@dBT.business_type_id">@dBT.business_type_name</option>
+                }
+            }
+        </select><br />
         <label for="business_name">商家名稱</label>
         <input id="business_name"
         type="text"
@@ -93,13 +99,14 @@
 }
 @code {
     private DataBusinessList? selected;
-    private int business_type_id = 0;
+    private int business_type_id = -1;
     private string business_name = "";
     private string email = "";
     private string phone = "";
     private string address = "";
     private string errorMessage = "";
     private string business_id = "";
+    private List<DataBusinessType>? dataBusinessType;
     private IQueryable<DataBusinessList> dataBusinessList;
     private SignalRChat.Client.Model.BusinessList businessList;
     private Grid<DataBusinessList> GridDBL;
@@ -145,7 +152,8 @@
         {
             service = false;
         }
-        business_type_id = 0;
+        dataBusinessType = await ObjectBusinessListService.GetBusinessType();
+        business_type_id = -1;
         business_name = "";
         email = "";
         phone = "";
@@ -155,11 +163,11 @@
     }
     private async Task<GridDataProviderResult<DataBusinessList>> BusinessListDataProvider(GridDataProviderRequest<DataBusinessList> request)
     {
-        int businessId = -1;
-        if (!String.IsNullOrEmpty(business_id))
-        {
-            businessId = int.Parse(business_id);
-        }
+        // int businessId = -1;
+        // if (!String.IsNullOrEmpty(business_id))
+        // {
+        //     businessId = int.Parse(business_id);
+        // }
         SignalRChat.Client.Model.BusinessList bList = await ObjectBusinessListService.GetBusinessList(address, phone, email, business_name, business_type_id, int.Parse(configuration["CountPerPage"]), request.PageNumber);
         if (bList.code == "0")
         {

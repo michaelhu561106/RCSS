@@ -1164,6 +1164,6 @@ C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\SignalRChat.
 C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\refint\SignalRChat.Client.dll
 C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\SignalRChat.Client.pdb
 C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\ref\SignalRChat.Client.dll
-C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\compressed\jnj2vnh5aa-05r2hdc1p3.gz
-C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\compressed\y4shidw54m-2x1j9gqwva.gz
-C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\compressed\0idnupgtan-4czzfu39fh.gz
+C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\compressed\jnj2vnh5aa-2e141bxh4r.gz
+C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\compressed\y4shidw54m-wh3kvs7pc5.gz
+C:\RCSS\SignalRChat\SignalRChat\SignalRChat.Client\obj\Debug\net8.0\compressed\0idnupgtan-5y157m9hkz.gz
